@@ -55,20 +55,36 @@ void setup() {
 
 void updateButtonStates() {
 	interactionButtonsValue = analogRead(INTERACTION_BUTTONS_PIN);
+	Serial.print(F("input value: "));
+	Serial.println(interactionButtonsValue);
+
+	/*
+
+		input value: 338
+		input value: 339
+		input value: 339
+		input value: 339
+		input value: 681
+		input value: 682
+		input value: 681
+		input value: 681
+		input value: 681
+		input value: 682
+
+	*/
 }
 
 
 void loop() {
 	updateButtonStates();
 
-	if (interactionButtonsValue > MAX_NOISE_THRESHOLD) {
-		/*if (interactionButtonsValue < A_BUTTON_MAX_THRESHOLD &&
-			interactionButtonsValue > A_BUTTON_MIN_THRESHOLD) {
+	/*if (interactionButtonsValue > MAX_NOISE_THRESHOLD) {
+		if (interactionButtonsValue < A_BUTTON_MAX_THRESHOLD && interactionButtonsValue > A_BUTTON_MIN_THRESHOLD) {
 			buttonPressed_A();
 		} else {
 			if (interactionButtonsValue < B_BUTTON_THRESHOLD) {
 				buttonPressed_B();
 			}
-		}*/
-	}
+		}
+	}*/
 }
