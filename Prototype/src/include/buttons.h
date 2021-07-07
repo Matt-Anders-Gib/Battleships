@@ -40,13 +40,6 @@ const static constexpr unsigned short ABC_BUTTON_MAX = 648;
 const static constexpr unsigned short ABC_BUTTON_RANGE = ABC_BUTTON_MAX - ABC_BUTTON_MIN;
 
 
-static const constexpr unsigned short GROUND_THRESHOLD_VALUE = 3;
-static const constexpr unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value may change based on your board
-
-
-static const constexpr unsigned short INPUT_SEARCH_MS = 70; //Period to wait for additional inputs before reporting button press
-
-
 struct ButtonEvent {
 
 };
@@ -54,11 +47,18 @@ struct ButtonEvent {
 
 class Buttons {
 private:
+	static const unsigned short GROUND_THRESHOLD_VALUE = 3;
+	static const unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value may change based on your board
+
+	static const unsigned short INPUT_SEARCH_MS = 70; //Period to wait for additional inputs before reporting button press
+
 	unsigned short inputVoltageLevel = 0;
 	unsigned short highestInputVoltageLevel = 0;
 
 	unsigned long long nowMS = 0;
 	unsigned long long inputStartTime = 0;
+
+	bool waitingForInput = false;
 
 	void down();
 	void up();

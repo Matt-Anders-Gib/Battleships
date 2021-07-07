@@ -6,48 +6,44 @@ void Buttons::up() {
 }
 
 
-void Buttons::down() {
-	if(inputStartTime == 0) {
-		inputStartTime = millis();
-	}
-
-	if((unsigned)(inputVoltageLevel - A_BUTTON_MIN) <= A_BUTTON_RANGE) {
+void Buttons::down(const unsigned short voltageLevel) {
+	if((unsigned)(voltageLevel - A_BUTTON_MIN) <= A_BUTTON_RANGE) {
 		Serial.println(F("A button"));
 		return;
 	}
 
-	if((unsigned)(inputVoltageLevel - B_BUTTON_MIN) <= B_BUTTON_RANGE) {
+	if((unsigned)(voltageLevel - B_BUTTON_MIN) <= B_BUTTON_RANGE) {
 		Serial.println(F("B button"));
 		return;
 	}
 
-	if((unsigned)(inputVoltageLevel - C_BUTTON_MIN) <= C_BUTTON_RANGE) {
+	if((unsigned)(voltageLevel - C_BUTTON_MIN) <= C_BUTTON_RANGE) {
 		Serial.println(F("C button"));
 		return;
 	}
 
-	if((unsigned)(inputVoltageLevel - AB_BUTTON_MIN) <= AB_BUTTON_RANGE) {
+	if((unsigned)(voltageLevel - AB_BUTTON_MIN) <= AB_BUTTON_RANGE) {
 		Serial.println(F("A+B buttons"));
 		return;
 	}
 
-	if((unsigned)(inputVoltageLevel - AC_BUTTON_MIN) <= AC_BUTTON_RANGE) {
+	if((unsigned)(voltageLevel - AC_BUTTON_MIN) <= AC_BUTTON_RANGE) {
 		Serial.println(F("A+C buttons"));
 		return;
 	}
 
-	if((unsigned)(inputVoltageLevel - BC_BUTTON_MIN) <= BC_BUTTON_RANGE) {
+	if((unsigned)(voltageLevel - BC_BUTTON_MIN) <= BC_BUTTON_RANGE) {
 		Serial.println(F("B+C buttons"));
 		return;
 	}
 
-	if((unsigned)(inputVoltageLevel - ABC_BUTTON_MIN) <= ABC_BUTTON_RANGE) {
+	if((unsigned)(voltageLevel - ABC_BUTTON_MIN) <= ABC_BUTTON_RANGE) {
 		Serial.println(F("A+B+C buttons"));
 		return;
 	}
 
 	Serial.print(F("Unexpected voltage level: "));
-	Serial.println(inputVoltageLevel);
+	Serial.println(voltageLevel);
 }
 
 
@@ -56,10 +52,19 @@ void Buttons::poll() {
 	inputVoltageLevel = analogRead(INPUT_PIN);
 	//Serial.println(inputVoltageLevel);
 
+	if(waitingForInput && nowMS > inputStartTime + INPUT_SEARCH_MS) {
+		void = down(highestInputVoltageLevel);
+		highestInputVoltageLevel = 0;
+
+		//send(?) button to "logic controller"
+		waitingForInput = false;
+	}
+
 	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) { //AT LEAST ONE BUTTON IS CURRENTLY BEING PRESSED
-		if(nowMS > inputStartTime + INPUT_SEARCH_MS) {
+		if(nowMS > inputStartTime + INPUT_SEARCH_MS) { //THIS IS THE FIRST INPUT IN A SEARCH PERIOD
 			inputStartTime = nowMS;
-		} else {
+			waitingForInput = true;
+		} else { //THIS INPUT IS IN THE MIDDLE OF AN INPUT SEARCH PERIOD
 			if(inputVoltageLevel > highestInputVoltageLevel) {
 				highestInputVoltageLevel = inputVoltageLevel;
 			}
