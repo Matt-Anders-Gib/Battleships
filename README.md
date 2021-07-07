@@ -1,3 +1,3 @@
 # Battleships
 
-Yo
+Multiplayer battleships running on an Arduino.
