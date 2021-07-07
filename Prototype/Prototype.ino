@@ -4,15 +4,15 @@
 #include "src/include/network.h"
 
 
-Input input;
-Display display;
-Network network;
+Input buttons;
+Display oled;
+Network net;
 
 
 void loop() {
-	input.getInput();
-	display.updateDisplay();
-	network.processNetwork();
+	buttons.getInput();
+	oled.updateDisplay();
+	net.processNetwork();
 }
 
 
