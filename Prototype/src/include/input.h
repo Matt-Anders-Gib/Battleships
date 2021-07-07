@@ -41,15 +41,20 @@ const static constexpr unsigned short ABC_BUTTON_MAX = 648;
 const static constexpr unsigned short ABC_BUTTON_RANGE = ABC_BUTTON_MAX - ABC_BUTTON_MIN;
 
 
-
 static const constexpr unsigned short GROUND_THRESHOLD_VALUE = 3;
-static const constexpr unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value will change based on your board
+static const constexpr unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value may change based on your board
+
+
+static const constexpr unsigned short INPUT_SEARCH_MS = 128; //Essentially a debounce. Separate button presses will be considered one "input" during this interval, allowing detection of combinations.
+
 
 
 class Input {
 private:
 	unsigned short inputVoltageLevel = 0;
 	unsigned short highestInputVoltageLevel = 0;
+
+	unsigned long long inputStartTime = 0;
 
 	void buttonDown();
 	void buttonUp();

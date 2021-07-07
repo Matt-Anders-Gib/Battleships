@@ -1,7 +1,7 @@
 #include "Arduino.h"
-#include "input.h"
-#include "display.h"
-#include "network.h"
+#include "src/include/input.h"
+#include "src/include/display.h"
+#include "src/include/network.h"
 
 
 Input input;

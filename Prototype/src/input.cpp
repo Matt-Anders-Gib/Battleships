@@ -1,13 +1,17 @@
-#include "input.h"
+#include "include/input.h"
 
 
 void Input::buttonUp() {
-
+	inputStartTime = 0;
 }
 
 
 
 void Input::buttonDown() {
+	if(inputStartTime == 0) {
+		inputStartTime = millis();
+	}
+
 	if((unsigned)(inputVoltageLevel - A_BUTTON_MIN) <= A_BUTTON_RANGE) {
 		Serial.println(F("A button"));
 		return;
@@ -42,6 +46,9 @@ void Input::buttonDown() {
 		Serial.println(F("A+B+C buttons"));
 		return;
 	}
+
+	Serial.print(F("Unexpected voltage level: "));
+	Serial.println(inputVoltageLevel);
 }
 
 
@@ -60,6 +67,10 @@ void Input::getInput() {
 		if(inputVoltageLevel > highestInputVoltageLevel) {
 			buttonDown(); //maybe debounce here?
 		}
+	}
+
+	if(inputStartTime < millis() - INPUT_SEARCH_MS) {
+		
 	}
 
 	//If voltage increase is detected, record highest value as input state
