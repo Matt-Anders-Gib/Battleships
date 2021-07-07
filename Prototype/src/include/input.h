@@ -2,6 +2,7 @@
 #define INPUT_H
 
 #include "Arduino.h"
+#include "buttons.h"
 
 
 class Input {

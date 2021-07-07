@@ -1,12 +1,12 @@
 #include "include/buttons.h"
 
 
-void Button::up() {
+void Buttons::up() {
 	inputStartTime = 0;
 }
 
 
-void Button::down() {
+void Buttons::down() {
 	if(inputStartTime == 0) {
 		inputStartTime = millis();
 	}
@@ -52,11 +52,18 @@ void Button::down() {
 
 
 void Buttons::poll() {
+	nowMS = millis();
 	inputVoltageLevel = analogRead(INPUT_PIN);
 	//Serial.println(inputVoltageLevel);
 
-	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) { //BUTTON DOWN
-		
+	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) { //AT LEAST ONE BUTTON IS CURRENTLY BEING PRESSED
+		if(nowMS > inputStartTime + INPUT_SEARCH_MS) {
+			inputStartTime = nowMS;
+		} else {
+			if(inputVoltageLevel > highestInputVoltageLevel) {
+				highestInputVoltageLevel = inputVoltageLevel;
+			}
+		}
 	} else {
 
 	}

@@ -1,6 +1,8 @@
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
+#include "Arduino.h"
+
 
 //TIE-DOWN_RESISTANCE = 10000 Ohms
 
@@ -43,6 +45,11 @@ static const constexpr unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin
 
 
 static const constexpr unsigned short INPUT_SEARCH_MS = 70; //Period to wait for additional inputs before reporting button press
+
+
+struct ButtonEvent {
+
+};
 
 
 class Buttons {
