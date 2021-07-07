@@ -2,7 +2,7 @@
 
 
 void Buttons::up() {
-	inputStartTime = 0;
+
 }
 
 
@@ -52,30 +52,27 @@ void Buttons::poll() {
 	inputVoltageLevel = analogRead(INPUT_PIN);
 	//Serial.println(inputVoltageLevel);
 
-	if(waitingForInput && nowMS > inputStartTime + INPUT_SEARCH_MS) {
-		void = down(highestInputVoltageLevel);
-		highestInputVoltageLevel = 0;
-
-		//send(?) button to "logic controller"
-		waitingForInput = false;
-	}
-
 	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) { //AT LEAST ONE BUTTON IS CURRENTLY BEING PRESSED
-		if(nowMS > inputStartTime + INPUT_SEARCH_MS) { //THIS IS THE FIRST INPUT IN A SEARCH PERIOD
+		if(buttonPressedLastFrame == false) { //FIRST FRAME OF BUTTON PRESSED
 			inputStartTime = nowMS;
-			waitingForInput = true;
-		} else { //THIS INPUT IS IN THE MIDDLE OF AN INPUT SEARCH PERIOD
-			if(inputVoltageLevel > highestInputVoltageLevel) {
-				highestInputVoltageLevel = inputVoltageLevel;
-			}
+			buttonPressedLastFrame = true;
+			inputProcessed = false;
 		}
-	} else {
 
+		if(nowMS < inputStartTime + INPUT_SEARCH_MS && inputVoltageLevel > highestInputVoltageLevel) {
+			highestInputVoltageLevel = inputVoltageLevel;
+		}
+	} else { //NO BUTTONS ARE CURRENTLY BEING PRESSED
+		if(buttonPressedLastFrame) {
+			up();
+			buttonPressedLastFrame = false;
+		}
 	}
 
-	//If voltage increase is detected, record highest value as input state
+	if(inputProcessed == false && nowMS > inputStartTime + INPUT_SEARCH_MS) {
+		down(highestInputVoltageLevel);
 
-	//poll input pin
-	//figure out button configuration based on value
-	//set button states
+		highestInputVoltageLevel = 0;
+		inputProcessed = true;
+	}
 }

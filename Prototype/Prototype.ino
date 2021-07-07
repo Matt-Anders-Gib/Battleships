@@ -2,6 +2,7 @@
 #include "src/include/input.h"
 #include "src/include/display.h"
 #include "src/include/network.h"
+#include "src/include/global.h"
 
 
 Input buttons;

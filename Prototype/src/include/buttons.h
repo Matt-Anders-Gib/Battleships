@@ -2,6 +2,7 @@
 #define BUTTONS_H
 
 #include "Arduino.h"
+#include "global.h"
 
 
 //TIE-DOWN_RESISTANCE = 10000 Ohms
@@ -48,19 +49,19 @@ struct ButtonEvent {
 class Buttons {
 private:
 	static const unsigned short GROUND_THRESHOLD_VALUE = 3;
-	static const unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value may change based on your board
 
-	static const unsigned short INPUT_SEARCH_MS = 70; //Period to wait for additional inputs before reporting button press
+	static const unsigned short INPUT_SEARCH_MS = 70; //Period to wait for additional inputs before reporting button press. Button Down is triggered at the end of the input search period
 
 	unsigned short inputVoltageLevel = 0;
 	unsigned short highestInputVoltageLevel = 0;
 
 	unsigned long long nowMS = 0;
+	
+	bool buttonPressedLastFrame = false;
 	unsigned long long inputStartTime = 0;
+	bool inputProcessed = true;
 
-	bool waitingForInput = false;
-
-	void down();
+	void down(const unsigned short voltageLevel);
 	void up();
 public:
 	void poll();
