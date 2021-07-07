@@ -2,7 +2,6 @@
 #define BUTTONS_H
 
 #include "Arduino.h"
-#include "global.h"
 
 
 //TIE-DOWN_RESISTANCE = 10000 Ohms
@@ -41,9 +40,22 @@ const static constexpr unsigned short ABC_BUTTON_MAX = 648;
 const static constexpr unsigned short ABC_BUTTON_RANGE = ABC_BUTTON_MAX - ABC_BUTTON_MIN;
 
 
-struct ButtonEvent {
+static const unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value may change based on your board
 
+
+enum class BUTTON {NONE, A, B, C, AB, AC, BC, ABC};
+
+struct ButtonEvent {
+	BUTTON button;
+	bool pressed;
+
+	ButtonEvent(BUTTON b, bool p) {
+		button = b;
+		pressed = p;
+	}
 };
+
+
 
 
 class Buttons {
@@ -61,10 +73,13 @@ private:
 	unsigned long long inputStartTime = 0;
 	bool inputProcessed = true;
 
-	void down(const unsigned short voltageLevel);
-	void up();
+	const ButtonEvent none = ButtonEvent(BUTTON::NONE, false);
+	ButtonEvent event = none;
+
+	ButtonEvent down(const unsigned short voltageLevel);
+	ButtonEvent up();
 public:
-	void poll();
+	ButtonEvent poll();
 };
 
 #endif

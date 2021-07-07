@@ -2,16 +2,14 @@
 #include "src/include/input.h"
 #include "src/include/display.h"
 #include "src/include/network.h"
-#include "src/include/global.h"
 
-
-Input buttons;
+Input input;
 Display oled;
 Network net;
 
 
 void loop() {
-	buttons.getInput();
+	input.getInput();
 	oled.updateDisplay();
 	net.processNetwork();
 }

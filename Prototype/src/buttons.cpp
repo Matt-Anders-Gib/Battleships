@@ -1,45 +1,45 @@
 #include "include/buttons.h"
 
 
-void Buttons::up() {
-
+ButtonEvent Buttons::up() {
+	return none;
 }
 
 
-void Buttons::down(const unsigned short voltageLevel) {
+ButtonEvent Buttons::down(const unsigned short voltageLevel) {
 	if((unsigned)(voltageLevel - A_BUTTON_MIN) <= A_BUTTON_RANGE) {
 		Serial.println(F("A button"));
-		return;
+		return ButtonEvent(BUTTON::A, true);
 	}
 
 	if((unsigned)(voltageLevel - B_BUTTON_MIN) <= B_BUTTON_RANGE) {
 		Serial.println(F("B button"));
-		return;
+		return ButtonEvent(BUTTON::B, true);
 	}
 
 	if((unsigned)(voltageLevel - C_BUTTON_MIN) <= C_BUTTON_RANGE) {
 		Serial.println(F("C button"));
-		return;
+		return ButtonEvent(BUTTON::C, true);
 	}
 
 	if((unsigned)(voltageLevel - AB_BUTTON_MIN) <= AB_BUTTON_RANGE) {
 		Serial.println(F("A+B buttons"));
-		return;
+		return ButtonEvent(BUTTON::AB, true);
 	}
 
 	if((unsigned)(voltageLevel - AC_BUTTON_MIN) <= AC_BUTTON_RANGE) {
 		Serial.println(F("A+C buttons"));
-		return;
+		return ButtonEvent(BUTTON::AC, true);
 	}
 
 	if((unsigned)(voltageLevel - BC_BUTTON_MIN) <= BC_BUTTON_RANGE) {
 		Serial.println(F("B+C buttons"));
-		return;
+		return ButtonEvent(BUTTON::BC, true);
 	}
 
 	if((unsigned)(voltageLevel - ABC_BUTTON_MIN) <= ABC_BUTTON_RANGE) {
 		Serial.println(F("A+B+C buttons"));
-		return;
+		return ButtonEvent(BUTTON::ABC, true);
 	}
 
 	Serial.print(F("Unexpected voltage level: "));
@@ -47,9 +47,10 @@ void Buttons::down(const unsigned short voltageLevel) {
 }
 
 
-void Buttons::poll() {
+ButtonEvent Buttons::poll() {
 	nowMS = millis();
 	inputVoltageLevel = analogRead(INPUT_PIN);
+	event = none;
 	//Serial.println(inputVoltageLevel);
 
 	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) { //AT LEAST ONE BUTTON IS CURRENTLY BEING PRESSED
@@ -64,15 +65,17 @@ void Buttons::poll() {
 		}
 	} else { //NO BUTTONS ARE CURRENTLY BEING PRESSED
 		if(buttonPressedLastFrame) {
-			up();
+			event = up();
 			buttonPressedLastFrame = false;
 		}
 	}
 
 	if(inputProcessed == false && nowMS > inputStartTime + INPUT_SEARCH_MS) {
-		down(highestInputVoltageLevel);
+		event = down(highestInputVoltageLevel);
 
 		highestInputVoltageLevel = 0;
 		inputProcessed = true;
 	}
+
+	return event;
 }
