@@ -73,8 +73,8 @@ private:
 	unsigned long long inputStartTime = 0;
 	bool inputProcessed = true;
 
-	const ButtonEvent none = ButtonEvent(BUTTON::NONE, false);
-	ButtonEvent event = none;
+	const ButtonEvent BUTTON_EVENT_NONE = ButtonEvent(BUTTON::NONE, false);
+	ButtonEvent event = BUTTON_EVENT_NONE;
 
 	ButtonEvent down(const unsigned short voltageLevel);
 	ButtonEvent up();
