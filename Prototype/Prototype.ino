@@ -16,12 +16,13 @@ void loop() {
 
 
 void setup() {
-	pinMode(INPUT_PIN, INPUT);
-
 	Serial.begin(9600);
 	while(!Serial) {
 		delay(250);
 	}
+
+	pinMode(INPUT_PIN, INPUT);
+	oled.setup();
 
 	Serial.println(F("Running!"));
 }
