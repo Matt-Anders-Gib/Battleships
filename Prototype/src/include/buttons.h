@@ -47,14 +47,30 @@ enum class BUTTON {NONE, A, B, C, AB, AC, BC, ABC};
 
 struct ButtonEvent {
 	BUTTON button;
+	char identifier;
 	bool pressed;
 
-	ButtonEvent(BUTTON b, bool p) {
+	ButtonEvent() {
+		button = BUTTON::NONE;
+		identifier = '!';
+		pressed = false;
+	}
+
+	ButtonEvent(BUTTON b, char i, bool p) {
 		button = b;
+		identifier = i;
 		pressed = p;
 	}
-};
 
+	bool operator==(const ButtonEvent& o) {
+		return (button == o.button && pressed == o.pressed);
+	}
+
+	bool operator!=(const ButtonEvent& o) {
+		return !(*this == o);
+	}
+};
+const ButtonEvent BUTTON_EVENT_NONE = ButtonEvent(BUTTON::NONE, 'N', false);
 
 
 
@@ -73,7 +89,6 @@ private:
 	unsigned long long inputStartTime = 0;
 	bool inputProcessed = true;
 
-	const ButtonEvent BUTTON_EVENT_NONE = ButtonEvent(BUTTON::NONE, false);
 	ButtonEvent event = BUTTON_EVENT_NONE;
 
 	ButtonEvent down(const unsigned short voltageLevel);

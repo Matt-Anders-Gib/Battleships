@@ -8,6 +8,7 @@
 class Input {
 private:
 	Buttons buttons;
+	ButtonEvent buttonEvent;
 public:
 	void getInput();
 };
