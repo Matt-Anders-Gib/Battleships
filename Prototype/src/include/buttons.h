@@ -43,7 +43,7 @@ const static constexpr unsigned short ABC_BUTTON_RANGE = ABC_BUTTON_MAX - ABC_BU
 static const unsigned short INPUT_PIN = A0; //IMPORTANT NOTE: this pin value may change based on your board
 
 
-enum class BUTTON {NONE, A, B, C, AB, AC, BC, ABC};
+enum class BUTTON {NONE, BTN_A, BTN_B, BTN_C, BTN_AB, BTN_AC, BTN_BC, BTN_ABC};
 
 struct ButtonEvent {
 	BUTTON button;
@@ -76,7 +76,7 @@ const ButtonEvent BUTTON_EVENT_NONE = ButtonEvent(BUTTON::NONE, 'N', false);
 
 class Buttons {
 private:
-	static const unsigned short GROUND_THRESHOLD_VALUE = 3;
+	static const unsigned short GROUND_THRESHOLD_VALUE = 50;
 
 	static const unsigned short INPUT_SEARCH_MS = 70; //Period to wait for additional inputs before reporting button press. Button Down is triggered at the end of the input search period
 

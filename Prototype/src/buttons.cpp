@@ -2,6 +2,10 @@
 
 
 ButtonEvent Buttons::up() {
+	Serial.print(F("Highest value: "));
+	Serial.println(highestInputVoltageLevel);
+	highestInputVoltageLevel = 0;
+
 	return BUTTON_EVENT_NONE;
 }
 
@@ -9,37 +13,37 @@ ButtonEvent Buttons::up() {
 ButtonEvent Buttons::down(const unsigned short voltageLevel) {
 	if((unsigned)(voltageLevel - A_BUTTON_MIN) <= A_BUTTON_RANGE) {
 		//Serial.println(F("A button"));
-		return ButtonEvent(BUTTON::A, 'A', true);
+		return ButtonEvent(BUTTON::BTN_A, 'A', true);
 	}
 
 	if((unsigned)(voltageLevel - B_BUTTON_MIN) <= B_BUTTON_RANGE) {
 		//Serial.println(F("B button"));
-		return ButtonEvent(BUTTON::B, 'B', true);
+		return ButtonEvent(BUTTON::BTN_B, 'B', true);
 	}
 
 	if((unsigned)(voltageLevel - C_BUTTON_MIN) <= C_BUTTON_RANGE) {
 		//Serial.println(F("C button"));
-		return ButtonEvent(BUTTON::C, 'C', true);
+		return ButtonEvent(BUTTON::BTN_C, 'C', true);
 	}
 
 	if((unsigned)(voltageLevel - AB_BUTTON_MIN) <= AB_BUTTON_RANGE) {
 		//Serial.println(F("A+B buttons"));
-		return ButtonEvent(BUTTON::AB, 'X', true);
+		return ButtonEvent(BUTTON::BTN_AB, 'X', true);
 	}
 
 	if((unsigned)(voltageLevel - AC_BUTTON_MIN) <= AC_BUTTON_RANGE) {
 		//Serial.println(F("A+C buttons"));
-		return ButtonEvent(BUTTON::AC, 'Y', true);
+		return ButtonEvent(BUTTON::BTN_AC, 'Y', true);
 	}
 
 	if((unsigned)(voltageLevel - BC_BUTTON_MIN) <= BC_BUTTON_RANGE) {
 		//Serial.println(F("B+C buttons"));
-		return ButtonEvent(BUTTON::BC, 'Z', true);
+		return ButtonEvent(BUTTON::BTN_BC, 'Z', true);
 	}
 
 	if((unsigned)(voltageLevel - ABC_BUTTON_MIN) <= ABC_BUTTON_RANGE) {
 		//Serial.println(F("A+B+C buttons"));
-		return ButtonEvent(BUTTON::ABC, '-', true);
+		return ButtonEvent(BUTTON::BTN_ABC, '-', true);
 	}
 
 	Serial.print(F("Unexpected voltage level: "));
@@ -51,9 +55,12 @@ ButtonEvent Buttons::down(const unsigned short voltageLevel) {
 ButtonEvent Buttons::poll() {
 	nowMS = millis();
 	inputVoltageLevel = analogRead(INPUT_PIN);
+	
 	event = BUTTON_EVENT_NONE;
 
 	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) {
+		Serial.println(inputVoltageLevel);
+
 		if(buttonPressedLastFrame == false) {
 			inputStartTime = nowMS;
 			buttonPressedLastFrame = true;
@@ -73,7 +80,7 @@ ButtonEvent Buttons::poll() {
 	if(inputProcessed == false && nowMS > inputStartTime + INPUT_SEARCH_MS) {
 		event = down(highestInputVoltageLevel);
 
-		highestInputVoltageLevel = 0;
+		
 		inputProcessed = true;
 	}
 
