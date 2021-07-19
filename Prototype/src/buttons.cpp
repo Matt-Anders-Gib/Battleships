@@ -59,7 +59,7 @@ ButtonEvent Buttons::poll() {
 	event = BUTTON_EVENT_NONE;
 
 	if(inputVoltageLevel > GROUND_THRESHOLD_VALUE) {
-		Serial.println(inputVoltageLevel);
+		//Serial.println(inputVoltageLevel);
 
 		if(buttonPressedLastFrame == false) {
 			inputStartTime = nowMS;
