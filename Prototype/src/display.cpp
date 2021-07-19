@@ -233,60 +233,37 @@ void Display::lcdTestPattern(void) {
 	display.endWrite();
 }
 
+
+
 void Display::setup() {
 	display.begin();
 
-	Serial.println("init");
-	uint16_t time = millis();
 	display.fillScreen(BLACK);
-	time = millis() - time;
 
-	Serial.print(F("Fill screen took (ms): "));
-	Serial.println(time, DEC);
-	delay(500);
+	Localization loc;
+	const char* titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
+	const char* titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
+	const char* startPromptString = loc.getLocalizedString(LOC_START_PROMPT);
 
-	lcdTestPattern();
-	delay(1000);
-
-	display.fillScreen(BLACK);
+	display.setTextSize(2);
+	display.setTextColor(RED);
 	display.setCursor(0, 0);
-	display.print("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa");
-	delay(1000);
+	display.print(titleFirstString);
 
-	// tft print function!
-	tftPrintTest();
-	delay(2000);
+	display.getTextBounds(titleFirstString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	unsigned short titleFirstHeight = calcH;
 
-	// a single pixel
-	display.drawPixel(display.width() / 2, display.height() / 2, GREEN);
-	delay(500);
+	display.getTextBounds(titleLastString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	unsigned short titleLastWidth = calcW;
+	unsigned short titleLastLowestPoint = titleFirstHeight + TEXT_VERTICAL_MARGIN + calcH;
+	display.setCursor(DISPLAY_WIDTH - titleLastWidth, titleFirstHeight + TEXT_VERTICAL_MARGIN);
+	display.print(titleLastString);
 
-	// line draw test
-	testlines(YELLOW);
-	delay(500);
-
-	// optimized lines
-	testfastlines(RED, BLUE);
-	delay(500);
-
-	testdrawrects(GREEN);
-	delay(1000);
-
-	testfillrects(YELLOW, MAGENTA);
-	delay(1000);
-
-	display.fillScreen(BLACK);
-	testfillcircles(10, BLUE);
-	testdrawcircles(10, WHITE);
-	delay(1000);
-
-	testroundrects();
-	delay(500);
-
-	testtriangles();
-	delay(500);
-
-	Serial.println("done");
+	display.setTextSize(1);
+	display.setTextColor(WHITE);
+	display.getTextBounds(startPromptString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	display.setCursor((DISPLAY_WIDTH - calcW)/2, titleLastLowestPoint + TEXT_VERTICAL_MARGIN);
+	display.print(startPromptString);
 }
 
 void Display::updateDisplay() {

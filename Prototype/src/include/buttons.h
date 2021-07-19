@@ -9,34 +9,34 @@
 //NOTE: +-1 Margin Added
 
 //A_BUTTON_RESISTANCE = 1000 Ohms
-const static constexpr unsigned short A_BUTTON_MIN = 920;//617;
-const static constexpr unsigned short A_BUTTON_MAX = 950;//621;
+const static constexpr unsigned short A_BUTTON_MIN = 920;
+const static constexpr unsigned short A_BUTTON_MAX = 950;
 const static constexpr unsigned short A_BUTTON_RANGE = A_BUTTON_MAX - A_BUTTON_MIN;
 
-//B_BUTTON_RESISTANCE = 2000 Ohms
-const static constexpr unsigned short B_BUTTON_MIN = 875;//565;
-const static constexpr unsigned short B_BUTTON_MAX = 905;//569;
+//B_BUTTON_RESISTANCE = 1540 Ohms
+const static constexpr unsigned short B_BUTTON_MIN = 875;
+const static constexpr unsigned short B_BUTTON_MAX = 905;
 const static constexpr unsigned short B_BUTTON_RANGE = B_BUTTON_MAX - B_BUTTON_MIN;
 
-//C_BUTTON_RESISTANCE = 3000 Ohms
-const static constexpr unsigned short C_BUTTON_MIN = 845;//523;
-const static constexpr unsigned short C_BUTTON_MAX = 870;//527;
+//C_BUTTON_RESISTANCE = 2000 Ohms
+const static constexpr unsigned short C_BUTTON_MIN = 845;
+const static constexpr unsigned short C_BUTTON_MAX = 870;
 const static constexpr unsigned short C_BUTTON_RANGE = C_BUTTON_MAX - C_BUTTON_MIN;
 
-const static constexpr unsigned short AB_BUTTON_MIN = 880;//637;
-const static constexpr unsigned short AB_BUTTON_MAX = 985;//641;
+const static constexpr unsigned short AB_BUTTON_MIN = 880;
+const static constexpr unsigned short AB_BUTTON_MAX = 985;
 const static constexpr unsigned short AB_BUTTON_RANGE = AB_BUTTON_MAX - AB_BUTTON_MIN;
 
-const static constexpr unsigned short AC_BUTTON_MIN = 845;//632;
-const static constexpr unsigned short AC_BUTTON_MAX = 971;//636;
+const static constexpr unsigned short AC_BUTTON_MIN = 845;
+const static constexpr unsigned short AC_BUTTON_MAX = 971;
 const static constexpr unsigned short AC_BUTTON_RANGE = AC_BUTTON_MAX - AC_BUTTON_MIN;
 
-const static constexpr unsigned short BC_BUTTON_MIN = 880;//607;
-const static constexpr unsigned short BC_BUTTON_MAX = 955;//611;
+const static constexpr unsigned short BC_BUTTON_MIN = 880;
+const static constexpr unsigned short BC_BUTTON_MAX = 955;
 const static constexpr unsigned short BC_BUTTON_RANGE = BC_BUTTON_MAX - BC_BUTTON_MIN;
 
-const static constexpr unsigned short ABC_BUTTON_MIN = 880;//644;
-const static constexpr unsigned short ABC_BUTTON_MAX = 1000;//648;
+const static constexpr unsigned short ABC_BUTTON_MIN = 880;
+const static constexpr unsigned short ABC_BUTTON_MAX = 1000;
 const static constexpr unsigned short ABC_BUTTON_RANGE = ABC_BUTTON_MAX - ABC_BUTTON_MIN;
 
 

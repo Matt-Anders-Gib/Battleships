@@ -1,10 +1,11 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1331.h>
 #include <SPI.h>
+
+#include "localization.h"
 
 
 #define	BLACK           0x0000
@@ -39,6 +40,17 @@ private:
 	void tftPrintTest();
 	void mediabuttons();
 	void lcdTestPattern();
+
+	const static unsigned short DISPLAY_WIDTH = 96;
+	const static unsigned short DISPLAY_HEIGHT = 64;
+
+	int16_t calcX = 0;
+	int16_t calcY = 0;
+	uint16_t calcW = 0;
+	uint16_t calcH = 0;
+
+	const static uint8_t TEXT_HORIZONTAL_MARGIN = 9;
+	const static uint8_t TEXT_VERTICAL_MARGIN = 5;
 public:
 	void setup();
 	void updateDisplay();
