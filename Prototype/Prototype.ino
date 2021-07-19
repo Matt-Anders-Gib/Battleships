@@ -10,7 +10,7 @@ Network net;
 
 void loop() {
 	input.getInput();
-	oled.updateDisplay();
+	oled.updateDisplay(millis());
 	net.processNetwork();
 }
 

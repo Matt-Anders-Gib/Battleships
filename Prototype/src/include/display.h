@@ -18,6 +18,9 @@
 #define WHITE           0xFFFF
 
 
+enum class GAME_SCREEN {NONE, TITLE_SCREEN, MAIN_MENU};
+
+
 class Display {
 private:
 	const static unsigned char DISPLAY_PIN_DC = 8;
@@ -27,19 +30,6 @@ private:
 	const static unsigned char DISPLAY_PIN_SCLK = 13;
 
 	Adafruit_SSD1331 display = Adafruit_SSD1331(DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_MOSI, DISPLAY_PIN_SCLK, DISPLAY_PIN_RST);
-
-	void testlines(uint16_t color);
-	void testdrawtext(char *text, uint16_t color);
-	void testfastlines(uint16_t color1, uint16_t color2);
-	void testdrawrects(uint16_t color);
-	void testfillrects(uint16_t color1, uint16_t color2);
-	void testfillcircles(uint8_t radius, uint16_t color);
-	void testdrawcircles(uint8_t radius, uint16_t color);
-	void testtriangles();
-	void testroundrects();
-	void tftPrintTest();
-	void mediabuttons();
-	void lcdTestPattern();
 
 	const static unsigned short DISPLAY_WIDTH = 96;
 	const static unsigned short DISPLAY_HEIGHT = 64;
@@ -51,9 +41,19 @@ private:
 
 	const static uint8_t TEXT_HORIZONTAL_MARGIN = 9;
 	const static uint8_t TEXT_VERTICAL_MARGIN = 5;
+
+	GAME_SCREEN currentScreen = GAME_SCREEN::TITLE_SCREEN;
+	GAME_SCREEN lastScreen = GAME_SCREEN::NONE;
+
+	void titleScreen(unsigned long long nowMS);
+	unsigned long long lastStartTextStateChangeMS = 0;
+	static const unsigned short START_TEXT_STATE_CHANGE_THRESHOLD_MS = 1337;
+	bool startTextVisible = false;
+
+	Localization loc;
 public:
 	void setup();
-	void updateDisplay();
+	void updateDisplay(unsigned long long nowMS);
 };
 
 #endif
