@@ -1,17 +1,24 @@
 #include "Arduino.h"
 #include "src/include/input.h"
-#include "src/include/display.h"
 #include "src/include/network.h"
+#include "src/include/logic.h"
+#include "src/include/display.h"
 
 Input input;
-Display oled;
+ButtonEvent currentInput;
+
+Logic logicController;
 Network net;
+Display oled;
 
 
 void loop() {
-	input.getInput();
+	currentInput = input.getInput();
+	net.processIncoming();
+
+	logicController.update();
+	net.processOutgoing();
 	oled.updateDisplay(millis());
-	net.processNetwork();
 }
 
 

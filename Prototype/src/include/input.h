@@ -10,7 +10,7 @@ private:
 	Buttons buttons;
 	ButtonEvent buttonEvent;
 public:
-	void getInput();
+	ButtonEvent getInput();
 };
 
 #endif

@@ -4,7 +4,8 @@
 class Network {
 private:
 public:
-	void processNetwork();
+	void processIncoming();
+	void processOutgoing();
 };
 
 #endif
