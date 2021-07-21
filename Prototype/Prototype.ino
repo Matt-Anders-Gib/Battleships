@@ -14,7 +14,7 @@ Display oled;
 
 
 void loop() {
-	currentInput = input.getInput();
+	currentInput = input.poll();
 	net.processIncoming();
 
 	logicController.update();
