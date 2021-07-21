@@ -58,6 +58,7 @@ void Display::clear() {
 
 void Display::setup() {
 	display.begin();
+	clear();
 	currentScene = new TitleScreen(display, loc);
 }
 

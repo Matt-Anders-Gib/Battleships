@@ -41,11 +41,11 @@ public:
 };
 
 
-class TitleScreen : GameScene {
+class TitleScreen : public GameScene {
 private:
-	char* titleFirstString;
-	char* titleLastString;
-	char* startPromptString;
+	const char* titleFirstString;
+	const char* titleLastString;
+	const char* startPromptString;
 
 	unsigned char bottomOfTitleY;
 
