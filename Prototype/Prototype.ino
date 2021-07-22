@@ -6,7 +6,7 @@
 
 
 Input input;
-ButtonEvent currentInput;
+Queue<ButtonEvent> events;
 
 Logic logicController;
 Network net;
@@ -14,7 +14,7 @@ Display oled;
 
 
 void loop() {
-	currentInput = input.poll();
+	input.poll(events);
 	net.processIncoming();
 
 	logicController.update();
@@ -29,7 +29,6 @@ void setup() {
 		delay(250);
 	}
 
-	pinMode(INPUT_PIN, INPUT);
 	oled.setup();
 
 	Serial.println(F("Running!"));
