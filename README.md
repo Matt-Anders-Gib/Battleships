@@ -1,4 +1,4 @@
-# Battleships
+# Strife Sloops
 
 Multiplayer battleships running on an Arduino.
 
