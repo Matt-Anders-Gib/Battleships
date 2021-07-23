@@ -14,10 +14,10 @@ Display oled;
 
 
 void loop() {
-	input.poll(events);
+	input.poll(events, millis());
 	net.processIncoming();
 
-	logicController.update();
+	logicController.update(events);
 	net.processOutgoing();
 	oled.updateDisplay(millis());
 }

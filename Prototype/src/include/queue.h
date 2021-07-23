@@ -49,6 +49,7 @@ public:
 	QueueNode<T>* enqueue(T*); //puts node at end of queue
 	QueueNode<T>* dequeue(); //take first node
 	QueueNode<T>* peek(); //returns first node
+	const bool empty();
 
 	QueueNode<T>* find(T&);
 
@@ -95,6 +96,16 @@ QueueNode<T>* Queue<T>::peek() {
 	}
 
 	return root;
+}
+
+
+template <class T>
+const bool Queue<T>::empty() {
+	if(root == nullptr) {
+		return true;
+	}
+
+	return false;
 }
 
 
