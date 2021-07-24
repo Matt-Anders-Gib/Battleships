@@ -3,7 +3,36 @@
 
 
 #include "Arduino.h"
-#include "global.h"
+
+
+#define BUTTON_DOWN true
+#define BUTTON_UP false
+
+
+class Button {
+private:
+	const unsigned short BUTTON_PIN;
+	const char name;
+	bool state = false;
+
+	unsigned long long lastStateChangeTimeMS = 0;
+public:
+	Button(const unsigned short p, const char n) : BUTTON_PIN{p}, name{n} {
+		pinMode(p, INPUT);
+	}
+
+	const unsigned short getPin() {return BUTTON_PIN;}
+	const char getName() {return name;}
+	const bool getState() {return state;}
+
+	void up() {state = false;}
+	void down(unsigned long long nowMS) {
+		state = true;
+		lastStateChangeTimeMS = nowMS;
+	}
+
+	const unsigned long long getLastStateChangeTimeMS() {return lastStateChangeTimeMS;}
+};
 
 
 class Input {
