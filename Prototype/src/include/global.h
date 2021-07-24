@@ -37,12 +37,4 @@ public:
 	const unsigned long long getLastStateChangeTimeMS() {return lastStateChangeTimeMS;}
 };
 
-
-struct ButtonEvent {
-	Button& button;
-	bool pressed;
-
-	ButtonEvent(Button& b, bool p) : button{b}, pressed{p} {}
-};
-
 #endif
