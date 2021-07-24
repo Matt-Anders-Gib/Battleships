@@ -9,6 +9,7 @@ namespace Gib {
 	private:
 		const unsigned short BUFFER_SIZE;
 		T** buffer;
+		T* held;
 
 		unsigned short headIndex = 0;
 		unsigned short tailIndex = 0;
@@ -48,6 +49,15 @@ T* Gib::RingBuffer<T>::pop() {
 	if(empty()) {
 		return nullptr;
 	}
+
+	held = buffer[headIndex];
+
+	headIndex += 1;
+	if(headIndex == BUFFER_SIZE) {
+		headIndex = 0;
+	}
+
+	return held;
 }
 
 #endif
