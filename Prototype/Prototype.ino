@@ -4,6 +4,10 @@
 #include "src/include/logic.h"
 #include "src/include/display.h"
 
+#include "src/include/ringbuffer.h"
+
+Gib::RingBuffer<ButtonEvent> events_ = Gib::RingBuffer<ButtonEvent>(16);
+
 
 Input input;
 Queue<ButtonEvent> events;
