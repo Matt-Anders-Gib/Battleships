@@ -16,8 +16,6 @@ namespace Gib {
 	public:
 		RingBuffer(const unsigned short s);
 
-		const bool empty() const {return headIndex == tailIndex;}
-
 		void push(const T* obj);
 		T* pop();
 	};
@@ -46,15 +44,21 @@ void Gib::RingBuffer<T>::push(const T* obj) {
 
 template <class T>
 T* Gib::RingBuffer<T>::pop() {
-	if(empty()) {
+	if(headIndex == tailIndex) {
+		//queue is either full or empty- assume empty for safety
 		return nullptr;
 	}
 
 	held = buffer[headIndex];
+	buffer[headIndex] = nullptr;
 
 	headIndex += 1;
 	if(headIndex == BUFFER_SIZE) {
 		headIndex = 0;
+	}
+
+	if(headIndex == tailIndex) {
+		//now empty
 	}
 
 	return held;
