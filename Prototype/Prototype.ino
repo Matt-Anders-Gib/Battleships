@@ -4,13 +4,12 @@
 #include "src/include/logic.h"
 #include "src/include/display.h"
 
-#include "src/include/ringbuffer.h"
+#include "src/include/eventqueue.h"
 
-Gib::RingBuffer<ButtonEvent> events_ = Gib::RingBuffer<ButtonEvent>(16);
+Gib::RingBuffer<Event> events = Gib::RingBuffer<ButtonEvent>(16);
 
 
 Input input;
-Queue<ButtonEvent> events;
 
 Logic logicController;
 Network net;

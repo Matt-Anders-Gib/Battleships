@@ -2,7 +2,6 @@
 #define LOGIC_H
 
 #include "global.h"
-#include "queue.h"
 
 
 class Logic {

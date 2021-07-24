@@ -4,7 +4,6 @@
 
 #include "Arduino.h"
 #include "global.h"
-#include "queue.h"
 
 
 class Input {
