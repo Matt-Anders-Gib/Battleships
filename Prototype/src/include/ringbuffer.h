@@ -3,7 +3,6 @@
 
 
 namespace Gib {
-
 	template <class T>
 	class RingBuffer {
 	private:
@@ -23,15 +22,10 @@ namespace Gib {
 	};
 }
 
+
 template <class T>
 Gib::RingBuffer<T>::RingBuffer(const unsigned short s) : BUFFER_SIZE{s} {
 	buffer = new T*[BUFFER_SIZE]();
-}
-
-
-template <class T>
-T* Gib::RingBuffer::find(const T& obj) {
-	return nullptr; //finish this!
 }
 
 

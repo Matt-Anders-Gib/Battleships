@@ -2,6 +2,7 @@
 #define EVENTQUEUE_H
 
 #include "ringbuffer.h"
+#include "linkedlist.h"
 
 
 enum class EVENT_TYPE {BUTTON_DOWN, BUTTON_UP};
@@ -16,14 +17,14 @@ struct Event {
 
 
 struct Listener {
-	EVENT_TYPE focus;
-
+	EVENT_TYPE eventType;
+	void (*reaction)();
 };
 
 
 class EventQueue {
 private:
-	Gib::RingBuffer<Event> events = Gib::RingBuffer<ButtonEvent>(16);
+	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>(16);
 	Gib::RingBuffer<Listener> listeners = Gib::RingBuffer<Listener>(8);
 public:
 	void registerListener(Listener& listener);
