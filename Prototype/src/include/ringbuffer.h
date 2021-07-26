@@ -32,7 +32,11 @@ Gib::RingBuffer<T>::RingBuffer(const unsigned short s) : BUFFER_SIZE{s} {
 
 template <class T>
 Gib::RingBuffer<T>::~RingBuffer() {
-	delete[] buffer;
+	for(unsigned short i; i < BUFFER_SIZE; i += 1) {
+		delete buffer[i];
+	}
+
+	delete buffer;
 }
 
 
