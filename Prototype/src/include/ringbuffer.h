@@ -14,6 +14,7 @@ namespace Gib {
 		unsigned short tailIndex = 0;
 	public:
 		RingBuffer(const unsigned short s);
+		~RingBuffer();
 
 		T* find(const T& obj);
 
@@ -26,6 +27,12 @@ namespace Gib {
 template <class T>
 Gib::RingBuffer<T>::RingBuffer(const unsigned short s) : BUFFER_SIZE{s} {
 	buffer = new T*[BUFFER_SIZE]();
+}
+
+
+template <class T>
+Gib::RingBuffer<T>::~RingBuffer() {
+	delete[] buffer;
 }
 
 
