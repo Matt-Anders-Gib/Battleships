@@ -1,7 +1,7 @@
 #include "include/input.h"
 
 
-void Input::poll(Queue<ButtonEvent>& events, const unsigned long long nowMS) {
+void Input::poll(EventQueue& events, const unsigned long long nowMS) {
 	for(Button& b : buttons) {
 		if(b.getLastStateChangeTimeMS() + DEBOUNCE_DELAY_MS < nowMS) {
 			if(digitalRead(b.getPin()) == LOW) {

@@ -3,6 +3,7 @@
 
 
 #include "Arduino.h"
+#include "eventqueue.h"
 
 
 #define BUTTON_DOWN true
@@ -47,7 +48,7 @@ private:
 
 	static const unsigned short DEBOUNCE_DELAY_MS = 25;
 public:
-	void poll(Queue<ButtonEvent>& events, const unsigned long long nowMS);
+	void poll(EventQueue& events, const unsigned long long nowMS);
 };
 
 #endif

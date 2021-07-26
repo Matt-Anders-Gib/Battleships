@@ -1,7 +1,7 @@
 #include "include/eventqueue.h"
 
 void EventQueue::registerListener(Listener& listener) {
-    listeners.push(&listener);
+    listeners.enqueue(&listener);
 }
 
 

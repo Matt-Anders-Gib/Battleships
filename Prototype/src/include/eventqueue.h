@@ -25,7 +25,7 @@ struct Listener {
 class EventQueue {
 private:
 	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>(16);
-	Gib::RingBuffer<Listener> listeners = Gib::RingBuffer<Listener>(8);
+	Gib::LinkedList<Listener> listeners = Gib::LinkedList<Listener>();
 public:
 	void registerListener(Listener& listener);
 	const bool unregisterListener(Listener& listener);
