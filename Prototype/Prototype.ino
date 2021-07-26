@@ -6,7 +6,7 @@
 
 #include "src/include/eventqueue.h"
 
-Gib::RingBuffer<Event> events = Gib::RingBuffer<ButtonEvent>(16);
+EventQueue events = EventQueue();
 
 
 Input input;

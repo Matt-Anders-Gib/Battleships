@@ -17,7 +17,7 @@ namespace Gib {
 
 		T* find(const T& obj);
 
-		void push(const T* obj);
+		void push(T* obj);
 		T* pop();
 	};
 }
@@ -30,7 +30,7 @@ Gib::RingBuffer<T>::RingBuffer(const unsigned short s) : BUFFER_SIZE{s} {
 
 
 template <class T>
-void Gib::RingBuffer<T>::push(const T* obj) {
+void Gib::RingBuffer<T>::push(T* obj) {
 	buffer[tailIndex] = obj;
 	tailIndex += 1;
 

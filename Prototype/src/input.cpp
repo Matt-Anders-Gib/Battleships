@@ -8,12 +8,14 @@ void Input::poll(EventQueue& events, const unsigned long long nowMS) {
 				if(b.getState() == BUTTON_UP) {
 					continue;
 				} else {
-					events.enqueue(new ButtonEvent(b, BUTTON_UP));
+					//events.enqueue(new ButtonEvent(b, BUTTON_UP));
+					events.enqueue(new Event(EVENT_TYPE::EVENT_BUTTON_UP, b.getName()));
 					b.up();
 				}
 			} else {
 				if(b.getState() == BUTTON_UP) {
-					events.enqueue(new ButtonEvent(b, BUTTON_DOWN));
+					events.enqueue(new Event(EVENT_TYPE::EVENT_BUTTON_DOWN, b.getName()));
+					//events.enqueue(new ButtonEvent(b, BUTTON_DOWN));
 					b.down(nowMS);
 				}
 			}

@@ -5,7 +5,7 @@
 #include "linkedlist.h"
 
 
-enum class EVENT_TYPE {BUTTON_DOWN, BUTTON_UP};
+enum class EVENT_TYPE {EVENT_BUTTON_DOWN, EVENT_BUTTON_UP};
 
 
 struct Event {
@@ -24,11 +24,13 @@ struct Listener {
 
 class EventQueue {
 private:
-	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>(16);
 	Gib::LinkedList<Listener> listeners = Gib::LinkedList<Listener>();
+	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>(16);
 public:
 	void registerListener(Listener& listener);
 	const bool unregisterListener(Listener& listener);
+
+	void enqueue(Event* e);
 };
 
 

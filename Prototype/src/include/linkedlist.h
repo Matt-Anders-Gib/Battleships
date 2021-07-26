@@ -7,9 +7,9 @@ namespace Gib {
 	class LinkedListNode {
 	private:
 		T& data;
-		LinkedListNode<T>* nextNode;
+		LinkedListNode<T>* nextNode = nullptr;
 	public:
-		LinkedListNode(T& obj);
+		LinkedListNode(T& obj) : data{obj} {};
 
 		void enqueue(T& obj);
 		LinkedListNode<T>* dequeue();
@@ -20,16 +20,9 @@ namespace Gib {
 
 
 template <class T>
-Gib::LinkedListNode<T>::LinkedListNode(T& obj) {
-	data = obj;
-	nextNode = nullptr;
-}
-
-
-template <class T>
 void Gib::LinkedListNode<T>::enqueue(T& obj) {
 	if(nextNode == nullptr) {
-		nextNode = Gib::LinkedListNode<T>(obj);
+		nextNode = new Gib::LinkedListNode<T>(obj);
 	} else {
 		nextNode->enqueue(obj);
 	}
@@ -65,7 +58,7 @@ namespace Gib {
 template <class T>
 void Gib::LinkedList<T>::enqueue(T& obj) {
 	if(head == nullptr) {
-		head = Gib::LinkedListNode<T>(obj);
+		head = new Gib::LinkedListNode<T>(obj);
 	} else {
 		head->enqueue(obj);
 	}
