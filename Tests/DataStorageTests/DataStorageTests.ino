@@ -27,18 +27,39 @@ struct SampleData {
 private:
 	int data;
 public:
-	const int getData() {return data;}
+	SampleData(const int d) : data{d} {}
+	const int getNum() {return data;}
 };
 
 
 void testRingBuffer() {
 	//Gib::RingBuffer<SampleData> testRB = Gib::RingBuffer<SampleData>(16);
-	SampleData testD = SampleData();
 }
 
 
 void testLinkedList() {
+	Gib::LinkedList<SampleData> testLL = Gib::LinkedList<SampleData>();
 
+	SampleData testDataOne = SampleData(69);
+	SampleData testDataTwo = SampleData(1337);
+	SampleData testDataThree = SampleData(9001);
+
+	Serial.print(F("Linked List size: "));
+	Serial.println(testLL.size());
+
+	Serial.println(F("Enqueue 3"));
+	testLL.enqueue(testDataOne);
+	testLL.enqueue(testDataTwo);
+	testLL.enqueue(testDataThree);
+
+	Serial.print(F("Linked List size: "));
+	Serial.println(testLL.size());
+
+	Serial.print(F("Dequeue: "));
+	Serial.println(testLL.dequeue()->getNum());
+
+	Serial.print(F("Linked List size: "));
+	Serial.println(testLL.size());
 }
 
 

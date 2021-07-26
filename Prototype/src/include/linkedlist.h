@@ -10,12 +10,26 @@ namespace Gib {
 		LinkedListNode<T>* nextNode = nullptr;
 	public:
 		LinkedListNode(T& obj) : data{obj} {};
+		~LinkedListNode();
+
+		const unsigned short childCount();
 
 		void enqueue(T& obj);
 		LinkedListNode<T>* dequeue();
 
+		T& getData() {return data;}
 		LinkedListNode<T>* getNextNode() {return nextNode;}
 	};
+}
+
+
+template <class T>
+const unsigned short Gib::LinkedListNode<T>::childCount() {
+	if(!nextNode) {
+		return 1;
+	}
+
+	return nextNode->childCount() + 1;
 }
 
 
@@ -26,6 +40,12 @@ void Gib::LinkedListNode<T>::enqueue(T& obj) {
 	} else {
 		nextNode->enqueue(obj);
 	}
+}
+
+
+template <class T>
+Gib::LinkedListNode<T>::~LinkedListNode() {
+	delete nextNode;
 }
 
 
@@ -47,11 +67,30 @@ namespace Gib {
 	class LinkedList {
 	private:
 		Gib::LinkedListNode<T>* head;
-		Gib::LinkedListNode<T>* tempReturn;
 	public:
+		~LinkedList();
+
+		const unsigned short size();
+
 		void enqueue(T& obj);
 		T* dequeue();
 	};
+}
+
+
+template <class T>
+Gib::LinkedList<T>::~LinkedList() {
+	delete head;
+}
+
+
+template <class T>
+const unsigned short Gib::LinkedList<T>::size() {
+	if(head == nullptr) {
+		return 0;
+	}
+
+	return head->childCount();
 }
 
 
@@ -72,12 +111,12 @@ T* Gib::LinkedList<T>::dequeue() {
 	}
 
 	if(!head->getNextNode()) {
-		tempReturn = head;
+		Gib::LinkedListNode<T>* tempReturn = head;
 		head = nullptr;
-		return tempReturn;
+		return &tempReturn->getData();
 	}
 
-	return head->dequeue();
+	return &head->dequeue()->getData();
 }
 
 #endif
