@@ -23,7 +23,14 @@ int freeMemory() {
 }
 
 
-struct SampleData {
+void printFreeMemory() {
+	Serial.print(F("Free memory: "));
+	Serial.println(freeMemory());
+	Serial.println();
+}
+
+
+class SampleData {
 private:
 	int data;
 public:
@@ -32,61 +39,89 @@ public:
 };
 
 
+class ParentObject {
+private:
+	Gib::RingBuffer<SampleData> testRB;
+public:
+	ParentObject() {
+		testRB = Gib::RingBuffer<SampleData>()
+	}
+};
+
+
+void testStackOnlyRingBufferAddInsideNewScope(Gib::RingBuffer<SampleData>& rb) {
+	//Gib::RingBuffer<SampleData> rb = Gib::RingBuffer<SampleData>();
+	printFreeMemory();
+
+	Serial.println(F("Creating obj"));
+	SampleData myS = SampleData(7);
+	printFreeMemory();
+
+	Serial.println(F("Adding"));
+	rb.push(myS);
+	printFreeMemory();
+
+	Serial.println(F("exiting function"));
+}
+
+
 void testRingBuffer() {
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
-	Gib::RingBuffer<SampleData> testRB = Gib::RingBuffer<SampleData>();
+	;
 	Serial.println(F("Allocated\n"));
-
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Create objects"));
-
 	SampleData s1 = SampleData(9001);
 	SampleData s2 = SampleData(1337);
 	SampleData s3 = SampleData(69);
-
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Pushing"));
-
 	testRB.push(s1);
 	testRB.push(s2);
 	testRB.push(s3);
-
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Popping 1"));
-
 	testRB.pop();
-
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Popping remaining"));
-
 	testRB.pop();
 	testRB.pop();
+	printFreeMemory();
 
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	{
+		Serial.println(F("allocating inside scope"));
+		SampleData s4 = SampleData(42);
+		printFreeMemory();
+
+		Serial.println(F("pushing inside scope"));
+		testRB.push(s4);
+		printFreeMemory();
+
+		Serial.println(F("leaving scope"));
+	}
+	printFreeMemory();
+
+	Serial.println(F("Trying to access object"));
+	Serial.println(testRB.pop()->getNum());
+	printFreeMemory();
+
+	Serial.println(F("Passing into function"));
+	testStackOnlyRingBufferAddInsideNewScope(testRB);
+	printFreeMemory();
+
+	Serial.println(F("trying to access obj"));
+	Serial.println(testRB.pop()->getNum());
+	printFreeMemory();
 }
 
 
 void testLinkedList() {
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Gib::LinkedList<SampleData> testLL = Gib::LinkedList<SampleData>();
 	Serial.println(F("Allocated"));
@@ -112,9 +147,7 @@ void testLinkedList() {
 	Serial.print(F("Linked List size: "));
 	Serial.println(testLL.size());
 
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 }
 
 
@@ -126,25 +159,19 @@ void setup() {
 
 	Serial.println(F("Start"));
 
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Test Ring Buffer"));
 	testRingBuffer();
 	Serial.println(F("Complete"));
 
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Test Linked List"));
 	testLinkedList();
 	Serial.println(F("Complete"));
 
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
+	printFreeMemory();
 
 	Serial.println(F("Done"));
 }
