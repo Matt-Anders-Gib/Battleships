@@ -6,24 +6,43 @@ namespace Gib {
 	template <class T>
 	class RingBuffer {
 	private:
-		static const unsigned short BUFFER_SIZE = 16;
-		T* buffer[BUFFER_SIZE];
+		const unsigned short BUFFER_SIZE;
+		T** buffer;
 		T* held;
 
 		unsigned short headIndex = 0;
 		unsigned short tailIndex = 0;
 	public:
+		RingBuffer(const unsigned short s);
+		~RingBuffer();
+
 		T* find(const T& obj);
 
-		void push(T& obj);
+		void push(T* obj);
 		T* pop();
 	};
 }
 
 
 template <class T>
-void Gib::RingBuffer<T>::push(T& obj) {
-	buffer[tailIndex] = &obj;
+Gib::RingBuffer<T>::RingBuffer(const unsigned short s) : BUFFER_SIZE{s} {
+	buffer = new T*[BUFFER_SIZE]();
+}
+
+
+template <class T>
+Gib::RingBuffer<T>::~RingBuffer() {
+	for(unsigned short i; i < BUFFER_SIZE; i += 1) {
+		delete buffer[i];
+	}
+
+	delete[] buffer;
+}
+
+
+template <class T>
+void Gib::RingBuffer<T>::push(T* obj) {
+	buffer[tailIndex] = obj;
 	tailIndex += 1;
 
 	if(tailIndex == BUFFER_SIZE) {

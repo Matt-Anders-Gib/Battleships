@@ -37,8 +37,45 @@ void testRingBuffer() {
 	Serial.println(freeMemory());
 	Serial.println();
 
-	Gib::RingBuffer<SampleData> testRB = Gib::RingBuffer<SampleData>(14);
+	Gib::RingBuffer<SampleData> testRB = Gib::RingBuffer<SampleData>();
 	Serial.println(F("Allocated\n"));
+
+	Serial.print(F("Free memory: "));
+	Serial.println(freeMemory());
+	Serial.println();
+
+	Serial.println(F("Create objects"));
+
+	SampleData s1 = SampleData(9001);
+	SampleData s2 = SampleData(1337);
+	SampleData s3 = SampleData(69);
+
+	Serial.print(F("Free memory: "));
+	Serial.println(freeMemory());
+	Serial.println();
+
+	Serial.println(F("Pushing"));
+
+	testRB.push(s1);
+	testRB.push(s2);
+	testRB.push(s3);
+
+	Serial.print(F("Free memory: "));
+	Serial.println(freeMemory());
+	Serial.println();
+
+	Serial.println(F("Popping 1"));
+
+	testRB.pop();
+
+	Serial.print(F("Free memory: "));
+	Serial.println(freeMemory());
+	Serial.println();
+
+	Serial.println(F("Popping remaining"));
+
+	testRB.pop();
+	testRB.pop();
 
 	Serial.print(F("Free memory: "));
 	Serial.println(freeMemory());
@@ -101,13 +138,13 @@ void setup() {
 	Serial.println(freeMemory());
 	Serial.println();
 
-	/*Serial.println(F("Test Linked List"));
+	Serial.println(F("Test Linked List"));
 	testLinkedList();
 	Serial.println(F("Complete"));
 
 	Serial.print(F("Free memory: "));
 	Serial.println(freeMemory());
-	Serial.println();*/
+	Serial.println();
 
 	Serial.println(F("Done"));
 }
