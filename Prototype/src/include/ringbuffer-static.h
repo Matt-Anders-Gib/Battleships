@@ -13,15 +13,17 @@ namespace Gib {
 		unsigned short headIndex = 0;
 		unsigned short tailIndex = 0;
 	public:
-		T& updateTail(); //push
-		T* getHead(); //pop
+		T* find(const T& obj);
+
+		void push(T& obj);
+		T* pop();
 	};
 }
 
 
 template <class T>
-T& Gib::RingBuffer<T>::updateTail() {
-	held = buffer[tailIndex];
+void Gib::RingBuffer<T>::push(T& obj) {
+	buffer[tailIndex] = &obj;
 	tailIndex += 1;
 
 	if(tailIndex == BUFFER_SIZE) {
@@ -31,13 +33,11 @@ T& Gib::RingBuffer<T>::updateTail() {
 	if(tailIndex + 1 == headIndex) {
 		//log an error that next last available queue index was taken. Next enqueue may overwrite unprocessed objects
 	}
-
-	return *held;
 }
 
 
 template <class T>
-T* Gib::RingBuffer<T>::getHead() {
+T* Gib::RingBuffer<T>::pop() {
 	if(headIndex == tailIndex) {
 		//queue is either full or empty- assume empty for safety
 		return nullptr;
@@ -57,22 +57,5 @@ T* Gib::RingBuffer<T>::getHead() {
 
 	return held;
 }
-
-
-/*
-template <class T>
-void Gib::RingBuffer<T>::push(T& obj) {
-	buffer[tailIndex] = &obj;
-	tailIndex += 1;
-
-	if(tailIndex == BUFFER_SIZE) {
-		tailIndex = 0;
-	}
-
-	if(tailIndex + 1 == headIndex) {
-		//log an error that next last available queue index was taken. Next enqueue may overwrite unprocessed objects
-	}
-}
-*/
 
 #endif

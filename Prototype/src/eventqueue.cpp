@@ -10,6 +10,6 @@ const bool EventQueue::unregisterListener(Listener& listener) {
 }
 
 
-void EventQueue::enqueue(Event* e) {
-	events.push(e);
+void EventQueue::enqueue(const Event& e) {
+	events.updateTail().overwrite(e);
 }

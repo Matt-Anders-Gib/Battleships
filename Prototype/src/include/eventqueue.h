@@ -9,10 +9,18 @@ enum class EVENT_TYPE {EVENT_BUTTON_DOWN, EVENT_BUTTON_UP};
 
 
 struct Event {
-	const EVENT_TYPE type;
-	const char attribute;
+	EVENT_TYPE type;
+	char attribute;
 
-	Event(EVENT_TYPE t, const char a) : type{t}, attribute{a} {}
+	Event(const EVENT_TYPE t, const char a) : type{t}, attribute{a} {}
+	void overwrite(const EVENT_TYPE t, const char a) {
+		type = t;
+		attribute = a;
+	}
+	void overwrite(const Event& e) {
+		type = e.type;
+		attribute = e.attribute;
+	}
 };
 
 
@@ -25,12 +33,12 @@ struct Listener {
 class EventQueue {
 private:
 	Gib::LinkedList<Listener> listeners = Gib::LinkedList<Listener>();
-	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>(16);
+	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>();
 public:
 	void registerListener(Listener& listener);
 	const bool unregisterListener(Listener& listener);
 
-	void enqueue(Event* e);
+	void enqueue(const Event& e);
 };
 
 
