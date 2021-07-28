@@ -2,32 +2,7 @@
 
 #include "M:\Developer\C++\Sketchbook\Battleships\Prototype\src\include\ringbuffer.h"
 #include "M:\Developer\C++\Sketchbook\Battleships\Prototype\src\include\linkedlist.h"
-
-
-#ifdef __arm__
-// should use uinstd.h to define sbrk but Due causes a conflict
-extern "C" char* sbrk(int incr);
-#else  // __ARM__
-extern char *__brkval;
-#endif  // __arm__
-
-int freeMemory() {
-  char top;
-#ifdef __arm__
-  return &top - reinterpret_cast<char*>(sbrk(0));
-#elif defined(CORE_TEENSY) || (ARDUINO > 103 && ARDUINO != 151)
-  return &top - __brkval;
-#else  // __arm__
-  return __brkval ? &top - __brkval : &top - __malloc_heap_start;
-#endif  // __arm__
-}
-
-
-void printFreeMemory() {
-	Serial.print(F("Free memory: "));
-	Serial.println(freeMemory());
-	Serial.println();
-}
+#include "M:\Developer\C++\Sketchbook\Battleships\Prototype\src\include\freememory.h"
 
 
 class SampleData {
@@ -41,16 +16,24 @@ public:
 
 class ParentObject {
 private:
-	Gib::RingBuffer<SampleData> testRB;
 public:
 	ParentObject() {
-		testRB = Gib::RingBuffer<SampleData>()
+		testRB = Gib::RingBuffer<SampleData>();
 	}
+
+	Gib::RingBuffer<SampleData> testRB;
 };
 
 
-void testStackOnlyRingBufferAddInsideNewScope(Gib::RingBuffer<SampleData>& rb) {
-	//Gib::RingBuffer<SampleData> rb = Gib::RingBuffer<SampleData>();
+void printFreeMemory() {
+	Serial.print(F("Free memory: "));
+	Serial.println(freeMemory());
+	Serial.println();
+}
+
+
+
+void testStackOnlyRingBufferAddInsideNewScope(ParentObject& po) { //fails! out of scope!
 	printFreeMemory();
 
 	Serial.println(F("Creating obj"));
@@ -58,7 +41,7 @@ void testStackOnlyRingBufferAddInsideNewScope(Gib::RingBuffer<SampleData>& rb) {
 	printFreeMemory();
 
 	Serial.println(F("Adding"));
-	rb.push(myS);
+	po.testRB.push(myS);
 	printFreeMemory();
 
 	Serial.println(F("exiting function"));
@@ -68,7 +51,7 @@ void testStackOnlyRingBufferAddInsideNewScope(Gib::RingBuffer<SampleData>& rb) {
 void testRingBuffer() {
 	printFreeMemory();
 
-	;
+	ParentObject par = ParentObject();
 	Serial.println(F("Allocated\n"));
 	printFreeMemory();
 
@@ -79,27 +62,27 @@ void testRingBuffer() {
 	printFreeMemory();
 
 	Serial.println(F("Pushing"));
-	testRB.push(s1);
-	testRB.push(s2);
-	testRB.push(s3);
+	par.testRB.push(s1);
+	par.testRB.push(s2);
+	par.testRB.push(s3);
 	printFreeMemory();
 
 	Serial.println(F("Popping 1"));
-	testRB.pop();
+	par.testRB.pop();
 	printFreeMemory();
 
 	Serial.println(F("Popping remaining"));
-	testRB.pop();
-	testRB.pop();
+	par.testRB.pop();
+	par.testRB.pop();
 	printFreeMemory();
 
-	{
+	{ //seems to reliably work, but I suspect this could cause problems
 		Serial.println(F("allocating inside scope"));
 		SampleData s4 = SampleData(42);
 		printFreeMemory();
 
 		Serial.println(F("pushing inside scope"));
-		testRB.push(s4);
+		par.testRB.push(s4);
 		printFreeMemory();
 
 		Serial.println(F("leaving scope"));
@@ -107,15 +90,15 @@ void testRingBuffer() {
 	printFreeMemory();
 
 	Serial.println(F("Trying to access object"));
-	Serial.println(testRB.pop()->getNum());
+	Serial.println(par.testRB.pop()->getNum());
 	printFreeMemory();
 
 	Serial.println(F("Passing into function"));
-	testStackOnlyRingBufferAddInsideNewScope(testRB);
+	testStackOnlyRingBufferAddInsideNewScope(par);
 	printFreeMemory();
 
 	Serial.println(F("trying to access obj"));
-	Serial.println(testRB.pop()->getNum());
+	Serial.println(par.testRB.pop()->getNum()); //fails
 	printFreeMemory();
 }
 
