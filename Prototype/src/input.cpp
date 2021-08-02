@@ -8,14 +8,52 @@ void Input::poll(EventQueue& events, const unsigned long long nowMS) {
 				if(b.getState() == BUTTON_UP) {
 					continue;
 				} else {
-					//events.enqueue(new ButtonEvent(b, BUTTON_UP));
-					events.enqueue(Event(EVENT_TYPE::EVENT_BUTTON_UP, b.getName()));
+					switch(b.getName()) {
+					case 'A':
+						Serial.println(F("enqueue: a btn up"));
+						events.enqueue(EVENT_TYPE::EVENT_A_BUTTON_UP);
+					break;
+
+					case 'B':
+						Serial.println(F("enqueue: b btn up"));
+						events.enqueue(EVENT_TYPE::EVENT_B_BUTTON_UP);
+					break;
+
+					case 'S':
+						Serial.println(F("enqueue: s btn up"));
+						events.enqueue(EVENT_TYPE::EVENT_S_BUTTON_UP);
+					break;
+
+					default:
+						//log error: unknown button
+					break;
+					}
+
 					b.up();
 				}
 			} else {
 				if(b.getState() == BUTTON_UP) {
-					events.enqueue(Event(EVENT_TYPE::EVENT_BUTTON_DOWN, b.getName()));
-					//events.enqueue(new ButtonEvent(b, BUTTON_DOWN));
+					switch(b.getName()) {
+					case 'A':
+						Serial.println(F("enqueue: a btn dwn"));
+						events.enqueue(EVENT_TYPE::EVENT_A_BUTTON_DOWN);
+					break;
+
+					case 'B':
+						Serial.println(F("enqueue: b btn dwn"));
+						events.enqueue(EVENT_TYPE::EVENT_B_BUTTON_DOWN);
+					break;
+
+					case 'S':
+						Serial.println(F("enqueue: s btn dwn"));
+						events.enqueue(EVENT_TYPE::EVENT_S_BUTTON_DOWN);
+					break;
+
+					default:
+						//log error: unknown button
+					break;
+					}
+
 					b.down(nowMS);
 				}
 			}

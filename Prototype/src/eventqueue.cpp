@@ -1,15 +1,27 @@
 #include "include/eventqueue.h"
 
-void EventQueue::registerListener(Listener& listener) {
-    listeners.enqueue(listener);
+
+unsigned short EventQueue::registerListener(Listener& l) {
+	listeners.enqueue(l);
+	return listenerUUID++;
 }
 
 
-const bool EventQueue::unregisterListener(Listener& listener) {
-    
+const bool EventQueue::unregisterListener(const unsigned short id) {
+	
 }
 
 
-void EventQueue::enqueue(const Event& e) {
+void EventQueue::enqueue(const EVENT_TYPE e) {
 	events.updateTail().overwrite(e);
+}
+
+
+const bool EventQueue::empty() {
+	return events.empty();
+}
+
+
+const Event& EventQueue::dequeue() { //WANRING: always check empty() first
+	return events.getHead();
 }
