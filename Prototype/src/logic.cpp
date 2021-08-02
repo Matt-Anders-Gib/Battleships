@@ -3,7 +3,6 @@
 
 void Logic::update(EventQueue& events) {
 	while(!events.empty()) {
-		Serial.println(F("logic: empty == false"));
 		currentEvent = events.dequeue();
 		
 		switch(currentEvent.type) {
