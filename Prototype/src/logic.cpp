@@ -4,8 +4,18 @@
 void Logic::update(EventQueue& events) {
 	while(!events.empty()) {
 		currentEvent = events.dequeue();
+
+		currentListener = events.firstListener();
+		while(currentListener != nullptr) {
+
+			if(currentEvent.type == currentListener->getData().eventType) {
+				currentListener->getData().reaction();
+			}
+
+			currentListener = currentListener->getNextNode();
+		}
 		
-		switch(currentEvent.type) {
+		/*switch(currentEvent.type) {
 		case EVENT_TYPE::EVENT_A_BUTTON_DOWN:
 			Serial.println(F("A Button Down"));
 		break;
@@ -37,6 +47,6 @@ void Logic::update(EventQueue& events) {
 		default:
 			Serial.println(F("Unknown event"));
 		break;
-		}
+		}*/
 	}
 }

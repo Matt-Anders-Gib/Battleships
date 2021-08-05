@@ -28,6 +28,7 @@ private:
 public:
 	unsigned short registerListener(Listener& l);
 	const bool unregisterListener(const unsigned short id);
+	const Gib::LinkedListNode<Listener>* firstListener() {return listeners.getHead()}
 
 	void enqueue(const EVENT_TYPE e);
 	const Event& dequeue(); //WANRING: always check empty() first

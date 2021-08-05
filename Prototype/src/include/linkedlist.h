@@ -72,6 +72,8 @@ namespace Gib {
 
 		const unsigned short size();
 
+		const Gib::LinkedListNode<T>* getHead() {return head;}
+
 		void enqueue(T& obj);
 		T* dequeue();
 	};

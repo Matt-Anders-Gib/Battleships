@@ -12,7 +12,8 @@ class Logic {
 private:
 	GAME_SCREEN lastScreen = GAME_SCREEN::NONE;
 
-	Event currentEvent;
+	Event& currentEvent;
+	Gib::LinkedListNode<Listener>* currentListener;
 public:
 	void update(EventQueue& events);
 };
