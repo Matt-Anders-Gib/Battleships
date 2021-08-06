@@ -1,12 +1,12 @@
 #include "include/display.h"
 
 
-GameScene::GameScene(Adafruit_SSD1331& d, Localization& l) : display{d}, loc{l} {
+GameScene::GameScene(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : display{d}, loc{l}, events{e} {
 
 }
 
 
-TitleScreen::TitleScreen(Adafruit_SSD1331& d, Localization& l) : GameScene(d, l) {
+TitleScreen::TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : GameScene(d, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
 	startPromptString = loc.getLocalizedString(LOC_START_PROMPT);
@@ -59,10 +59,15 @@ void Display::clear() {
 void Display::setup() {
 	display.begin();
 	clear();
-	currentScene = new TitleScreen(display, loc);
+	currentScene = new TitleScreen(display, loc, events);
 }
 
 
 void Display::updateDisplay(unsigned long long nowMS) {
 	currentScene->draw(nowMS);
+}
+
+
+Display::Display(EventQueue& e) : events{e} {
+
 }

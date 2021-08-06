@@ -1,9 +1,14 @@
 #include "include/logic.h"
 
 
+Logic::Logic() {
+	
+}
+
+
 void Logic::update(EventQueue& events) {
 	while(!events.empty()) {
-		currentEvent = events.dequeue();
+		Event& currentEvent = events.dequeue(); //do not declare every cycle!
 
 		currentListener = events.firstListener();
 		while(currentListener != nullptr) {

@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "localization.h"
+#include "eventqueue.h"
 
 
 #define	BLACK 0x0000
@@ -25,6 +26,8 @@ protected:
 	Adafruit_SSD1331& display;
 	Localization& loc;
 
+	EventQueue& events;
+
 	const static unsigned short DISPLAY_WIDTH = 96;
 	const static unsigned short DISPLAY_HEIGHT = 64;
 
@@ -36,7 +39,7 @@ protected:
 	uint16_t calcW = 0;
 	uint16_t calcH = 0;
 public:
-	GameScene(Adafruit_SSD1331& d, Localization& l);
+	GameScene(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
 	virtual void draw(unsigned long long nowMS) = 0;
 };
 
@@ -53,7 +56,7 @@ private:
 	static const unsigned short START_TEXT_STATE_CHANGE_THRESHOLD_MS = 1337;
 	bool startTextVisible = false;
 public:
-	TitleScreen(Adafruit_SSD1331& d, Localization& l);
+	TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~TitleScreen();
 };
@@ -69,9 +72,12 @@ private:
 
 	Adafruit_SSD1331 display = Adafruit_SSD1331(DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_MOSI, DISPLAY_PIN_SCLK, DISPLAY_PIN_RST);
 	Localization loc;
+	EventQueue& events;
 
 	GameScene* currentScene;
 public:
+	Display(EventQueue& e);
+
 	void clear();
 	void setup();
 	void updateDisplay(unsigned long long nowMS);

@@ -11,9 +11,9 @@ EventQueue events = EventQueue();
 
 Input input;
 
-Logic logicController;
+Logic logicController = Logic();
 Network net;
-Display oled;
+Display oled = Display(events);
 
 
 void loop() {

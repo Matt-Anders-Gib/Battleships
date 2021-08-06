@@ -22,6 +22,6 @@ const bool EventQueue::empty() {
 }
 
 
-const Event& EventQueue::dequeue() { //WANRING: always check empty() first
+Event& EventQueue::dequeue() { //WANRING: always check empty() first
 	return events.getHead();
 }
