@@ -14,7 +14,7 @@ void Logic::update(EventQueue& events) {
 		while(currentListener != nullptr) {
 
 			if(currentEvent.type == currentListener->getData().eventType) {
-				currentListener->getData().reaction();
+				currentListener->getData()();
 			}
 
 			currentListener = currentListener->getNextNode();

@@ -1,6 +1,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include "Arduino.h"
+
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1331.h>
 #include <SPI.h>
@@ -39,13 +41,34 @@ protected:
 	uint16_t calcW = 0;
 	uint16_t calcH = 0;
 public:
-	GameScene(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
+	GameScene(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : display{d}, loc{l}, events{e} {}
 	virtual void draw(unsigned long long nowMS) = 0;
+};
+
+
+struct TitleScreenListener : public Listener {
+	TitleScreenListener() {
+		eventType = EVENT_TYPE::EVENT_NONE;
+	}
+
+	TitleScreenListener(EVENT_TYPE e) {
+		eventType = e;
+	}
+
+	void callbackStartGame() {
+		Serial.println(F("Called!"));
+	}
+
+	void operator()() {
+		callbackStartGame();
+	}
 };
 
 
 class TitleScreen : public GameScene {
 private:
+	TitleScreenListener startGameListenerS;
+
 	const char* titleFirstString;
 	const char* titleLastString;
 	const char* startPromptString;

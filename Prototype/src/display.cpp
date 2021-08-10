@@ -1,11 +1,6 @@
 #include "include/display.h"
 
 
-GameScene::GameScene(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : display{d}, loc{l}, events{e} {
-
-}
-
-
 TitleScreen::TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : GameScene(d, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
@@ -27,6 +22,10 @@ TitleScreen::TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : 
 
 	display.setTextSize(1);
 	display.getTextBounds(startPromptString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+
+	//startGameListenerA = Listener(EVENT_TYPE::EVENT_A_BUTTON_DOWN, &callbackStartGame);
+	//startGameListenerB = Listener(EVENT_TYPE::EVENT_B_BUTTON_DOWN, &callbackStartGame);
+	//startGameListenerS = Listener(EVENT_TYPE::EVENT_S_BUTTON_DOWN, &callbackStartGame);
 }
 
 
@@ -48,6 +47,7 @@ void TitleScreen::draw(unsigned long long nowMS) {
 
 TitleScreen::~TitleScreen() {
 	//DELETE CHAR ARRAYS IF THEY ARE DYNAMIC
+	//unregister listener
 }
 
 
