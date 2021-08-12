@@ -87,7 +87,7 @@ public:
 	MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~MainMenu();
-}
+};
 
 
 class Display {

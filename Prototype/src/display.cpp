@@ -53,8 +53,8 @@ TitleScreen::~TitleScreen() {
 }
 
 
-MainMenu::MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e) {
-
+MainMenu::MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : GameScene(d, l, e) {
+	
 }
 
 
@@ -64,7 +64,7 @@ void MainMenu::draw(unsigned long long nowMS) {
 
 
 MainMenu::~MainMenu() {
-	
+
 }
 
 

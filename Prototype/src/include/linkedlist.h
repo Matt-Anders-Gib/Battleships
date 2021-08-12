@@ -36,7 +36,7 @@ const unsigned short Gib::LinkedListNode<T>::childCount() {
 template <class T>
 void Gib::LinkedListNode<T>::enqueue(T& obj) {
 	if(nextNode == nullptr) {
-		nextNode = new Gib::LinkedListNode<T>(obj);
+		nextNode = new Gib::LinkedListNode<T>(obj); //TODO: Convert to stack
 	} else {
 		nextNode->enqueue(obj);
 	}
@@ -99,7 +99,7 @@ const unsigned short Gib::LinkedList<T>::size() {
 template <class T>
 void Gib::LinkedList<T>::enqueue(T& obj) {
 	if(head == nullptr) {
-		head = new Gib::LinkedListNode<T>(obj);
+		head = new Gib::LinkedListNode<T>(obj); //TODO: Convert to stack
 	} else {
 		head->enqueue(obj);
 	}
