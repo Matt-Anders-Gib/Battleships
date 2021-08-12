@@ -56,7 +56,7 @@ struct TitleScreenListener : public Listener {
 	}
 
 	void operator()() {
-		Serial.println(F("Called!"));
+		Serial.println(F("Exit Main Menu!"));
 	}
 };
 
@@ -79,6 +79,15 @@ public:
 	void draw(unsigned long long nowMS);
 	~TitleScreen();
 };
+
+
+class MainMenu : public GameScene {
+private:
+public:
+	MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
+	void draw(unsigned long long nowMS);
+	~MainMenu();
+}
 
 
 class Display {

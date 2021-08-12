@@ -53,6 +53,21 @@ TitleScreen::~TitleScreen() {
 }
 
 
+MainMenu::MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e) {
+
+}
+
+
+void MainMenu::draw(unsigned long long nowMS) {
+
+}
+
+
+MainMenu::~MainMenu() {
+	
+}
+
+
 void Display::clear() {
 	display.fillScreen(BLACK);
 }
