@@ -14,20 +14,9 @@ struct Event {
 };
 
 
-/*struct Callable {
-	virtual ~Callable() {}
-	
-	virtual int operator() (void* args) = 0;
-};*/
-
-
 struct Listener {
 	EVENT_TYPE eventType;
 	virtual void operator()() = 0;
-	//virtual void (*reaction)() = 0;
-
-	//Listener() : reaction{Reaction()} {eventType = EVENT_TYPE::EVENT_NONE;}
-	//Listener(EVENT_TYPE e, Callable* r) : eventType{e}, reaction{r} {}
 };
 
 

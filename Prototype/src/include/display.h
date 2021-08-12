@@ -55,12 +55,8 @@ struct TitleScreenListener : public Listener {
 		eventType = e;
 	}
 
-	void callbackStartGame() {
-		Serial.println(F("Called!"));
-	}
-
 	void operator()() {
-		callbackStartGame();
+		Serial.println(F("Called!"));
 	}
 };
 

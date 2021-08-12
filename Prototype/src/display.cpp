@@ -26,6 +26,8 @@ TitleScreen::TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : 
 	//startGameListenerA = Listener(EVENT_TYPE::EVENT_A_BUTTON_DOWN, &callbackStartGame);
 	//startGameListenerB = Listener(EVENT_TYPE::EVENT_B_BUTTON_DOWN, &callbackStartGame);
 	//startGameListenerS = Listener(EVENT_TYPE::EVENT_S_BUTTON_DOWN, &callbackStartGame);
+	startGameListenerS = TitleScreenListener(EVENT_TYPE::EVENT_S_BUTTON_DOWN);
+	e.registerListener(startGameListenerS);
 }
 
 
