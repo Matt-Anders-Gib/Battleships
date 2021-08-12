@@ -5,7 +5,7 @@
 #include "linkedlist.h"
 
 
-enum class EVENT_TYPE {EVENT_NONE, EVENT_A_BUTTON_DOWN, EVENT_A_BUTTON_UP, EVENT_B_BUTTON_DOWN, EVENT_B_BUTTON_UP, EVENT_S_BUTTON_DOWN, EVENT_S_BUTTON_UP};
+enum class EVENT_TYPE : int {EVENT_NONE = 0, EVENT_A_BUTTON_DOWN, EVENT_A_BUTTON_UP, EVENT_B_BUTTON_DOWN, EVENT_B_BUTTON_UP, EVENT_S_BUTTON_DOWN, EVENT_S_BUTTON_UP};
 
 
 struct Event {
@@ -15,8 +15,12 @@ struct Event {
 
 
 struct Listener {
+	unsigned short id;
 	EVENT_TYPE eventType;
 	virtual void operator()() = 0;
+
+	const bool operator==(const Listener& o) {return id == o.id;}
+	const bool operator==(const unsigned short oID) {return id == oID;}
 };
 
 
@@ -26,7 +30,7 @@ private:
 	Gib::LinkedList<Listener> listeners = Gib::LinkedList<Listener>();
 	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>();
 public:
-	unsigned short registerListener(Listener& l);
+	void registerListener(Listener& l);
 	const bool unregisterListener(const unsigned short id);
 	Gib::LinkedListNode<Listener>* firstListener() {return listeners.getHead();}
 

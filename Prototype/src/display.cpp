@@ -23,10 +23,11 @@ TitleScreen::TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, 
 	oled.setTextSize(1);
 	oled.getTextBounds(startPromptString, 0, 0, &calcX, &calcY, &calcW, &calcH);
 
-	//startGameListenerA = Listener(EVENT_TYPE::EVENT_A_BUTTON_DOWN, &callbackStartGame);
-	//startGameListenerB = Listener(EVENT_TYPE::EVENT_B_BUTTON_DOWN, &callbackStartGame);
-	//startGameListenerS = Listener(EVENT_TYPE::EVENT_S_BUTTON_DOWN, &callbackStartGame);
+	startGameListenerA = TitleScreenListener(d, c, EVENT_TYPE::EVENT_A_BUTTON_DOWN);
+	startGameListenerB = TitleScreenListener(d, c, EVENT_TYPE::EVENT_B_BUTTON_DOWN);
 	startGameListenerS = TitleScreenListener(d, c, EVENT_TYPE::EVENT_S_BUTTON_DOWN);
+	e.registerListener(startGameListenerA);
+	e.registerListener(startGameListenerB);
 	e.registerListener(startGameListenerS);
 }
 

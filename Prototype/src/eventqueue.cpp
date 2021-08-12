@@ -1,14 +1,24 @@
 #include "include/eventqueue.h"
 
 
-unsigned short EventQueue::registerListener(Listener& l) {
+void EventQueue::registerListener(Listener& l) {
+	l.id = listenerUUID++;
 	listeners.enqueue(l);
-	return listenerUUID++;
 }
 
 
 const bool EventQueue::unregisterListener(const unsigned short id) {
-	
+	Listener *l = firstListener();
+	Listener *parent = 
+
+	while(l) {
+		if(l == id) {
+			//remove from linked list
+			return true;
+		}
+	}
+
+	return false;
 }
 
 

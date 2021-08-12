@@ -72,6 +72,8 @@ struct TitleScreenListener : public Listener {
 
 class TitleScreen : public GameScene {
 private:
+	TitleScreenListener startGameListenerA;
+	TitleScreenListener startGameListenerB;
 	TitleScreenListener startGameListenerS;
 
 	const char* titleFirstString;
