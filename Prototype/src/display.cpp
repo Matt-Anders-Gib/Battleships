@@ -1,32 +1,32 @@
 #include "include/display.h"
 
 
-TitleScreen::TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : GameScene(d, l, e) {
+TitleScreen::TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
 	startPromptString = loc.getLocalizedString(LOC_START_PROMPT);
 	
-	display.setTextSize(2);
-	display.setTextColor(RED);
-	display.setCursor(0, 0);
-	display.print(titleFirstString);
+	oled.setTextSize(2);
+	oled.setTextColor(RED);
+	oled.setCursor(0, 0);
+	oled.print(titleFirstString);
 
-	display.getTextBounds(titleFirstString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.getTextBounds(titleFirstString, 0, 0, &calcX, &calcY, &calcW, &calcH);
 	unsigned short titleFirstHeight = calcH;
 
-	display.getTextBounds(titleLastString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.getTextBounds(titleLastString, 0, 0, &calcX, &calcY, &calcW, &calcH);
 	unsigned short titleLastWidth = calcW;
 	bottomOfTitleY = titleFirstHeight + TEXT_VERTICAL_MARGIN + calcH;
-	display.setCursor(DISPLAY_WIDTH - titleLastWidth, titleFirstHeight + TEXT_VERTICAL_MARGIN);
-	display.print(titleLastString);
+	oled.setCursor(DISPLAY_WIDTH - titleLastWidth, titleFirstHeight + TEXT_VERTICAL_MARGIN);
+	oled.print(titleLastString);
 
-	display.setTextSize(1);
-	display.getTextBounds(startPromptString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.setTextSize(1);
+	oled.getTextBounds(startPromptString, 0, 0, &calcX, &calcY, &calcW, &calcH);
 
 	//startGameListenerA = Listener(EVENT_TYPE::EVENT_A_BUTTON_DOWN, &callbackStartGame);
 	//startGameListenerB = Listener(EVENT_TYPE::EVENT_B_BUTTON_DOWN, &callbackStartGame);
 	//startGameListenerS = Listener(EVENT_TYPE::EVENT_S_BUTTON_DOWN, &callbackStartGame);
-	startGameListenerS = TitleScreenListener(EVENT_TYPE::EVENT_S_BUTTON_DOWN);
+	startGameListenerS = TitleScreenListener(d, c, EVENT_TYPE::EVENT_S_BUTTON_DOWN);
 	e.registerListener(startGameListenerS);
 }
 
@@ -37,11 +37,11 @@ void TitleScreen::draw(unsigned long long nowMS) {
 		lastStartTextStateChangeMS = nowMS;
 
 		if(startTextVisible) {
-			display.setTextColor(WHITE);
-			display.setCursor((DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN); //store this calculation
-			display.print(startPromptString);
+			oled.setTextColor(WHITE);
+			oled.setCursor((DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN); //store this calculation
+			oled.print(startPromptString);
 		} else {
-			display.fillRect((DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN, calcW, calcH, BLACK); //store this calculation
+			oled.fillRect((DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN, calcW, calcH, BLACK); //store this calculation
 		}
 	}
 }
@@ -53,8 +53,12 @@ TitleScreen::~TitleScreen() {
 }
 
 
-MainMenu::MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : GameScene(d, l, e) {
-	
+MainMenu::MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
+	titleString = loc.getLocalizedString(LOC_TITLE);
+
+	oled.getTextBounds(titleString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.setCursor((DISPLAY_WIDTH - calcW)/2, TEXT_VERTICAL_MARGIN);
+	oled.print(titleString);
 }
 
 
@@ -68,15 +72,25 @@ MainMenu::~MainMenu() {
 }
 
 
+void Display::leaveTitleScreen() {
+	clear();
+
+	delete currentScene;
+	currentScene = new MainMenu(oled, loc, events);
+}
+
+
 void Display::clear() {
-	display.fillScreen(BLACK);
+	oled.fillScreen(BLACK);
+	oled.setTextSize(1);
+	oled.setTextColor(WHITE);
 }
 
 
 void Display::setup() {
-	display.begin();
+	oled.begin();
 	clear();
-	currentScene = new TitleScreen(display, loc, events);
+	currentScene = new TitleScreen(this, &Display::leaveTitleScreen, oled, loc, events);
 }
 
 

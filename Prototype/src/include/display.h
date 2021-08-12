@@ -22,10 +22,13 @@
 #define WHITE 0xFFFF
 
 
+class Display;
+
+
 class GameScene {
 private:
 protected:
-	Adafruit_SSD1331& display;
+	Adafruit_SSD1331& oled;
 	Localization& loc;
 
 	EventQueue& events;
@@ -41,22 +44,28 @@ protected:
 	uint16_t calcW = 0;
 	uint16_t calcH = 0;
 public:
-	GameScene(Adafruit_SSD1331& d, Localization& l, EventQueue& e) : display{d}, loc{l}, events{e} {}
+	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {}
 	virtual void draw(unsigned long long nowMS) = 0;
 };
 
 
 struct TitleScreenListener : public Listener {
+	Display *displayObject;
+	void (Display::*callback)();
+
 	TitleScreenListener() {
 		eventType = EVENT_TYPE::EVENT_NONE;
 	}
 
-	TitleScreenListener(EVENT_TYPE e) {
+	TitleScreenListener(Display *d, void (Display::*c)(), EVENT_TYPE e) {
+		displayObject = d;
+		callback = c;
 		eventType = e;
 	}
 
 	void operator()() {
 		Serial.println(F("Exit Main Menu!"));
+		(displayObject->*callback)();
 	}
 };
 
@@ -75,7 +84,7 @@ private:
 	static const unsigned short START_TEXT_STATE_CHANGE_THRESHOLD_MS = 1337;
 	bool startTextVisible = false;
 public:
-	TitleScreen(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
+	TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~TitleScreen();
 };
@@ -83,8 +92,11 @@ public:
 
 class MainMenu : public GameScene {
 private:
+	const char* titleString;
+
+
 public:
-	MainMenu(Adafruit_SSD1331& d, Localization& l, EventQueue& e);
+	MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~MainMenu();
 };
@@ -98,11 +110,12 @@ private:
 	const static unsigned char DISPLAY_PIN_MOSI = 11;
 	const static unsigned char DISPLAY_PIN_SCLK = 13;
 
-	Adafruit_SSD1331 display = Adafruit_SSD1331(DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_MOSI, DISPLAY_PIN_SCLK, DISPLAY_PIN_RST);
+	Adafruit_SSD1331 oled = Adafruit_SSD1331(DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_MOSI, DISPLAY_PIN_SCLK, DISPLAY_PIN_RST);
 	Localization loc;
 	EventQueue& events;
 
 	GameScene* currentScene;
+	void leaveTitleScreen();
 public:
 	Display(EventQueue& e);
 
