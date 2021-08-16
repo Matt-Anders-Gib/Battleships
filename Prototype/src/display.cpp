@@ -50,7 +50,9 @@ void TitleScreen::draw(unsigned long long nowMS) {
 
 TitleScreen::~TitleScreen() {
 	//DELETE CHAR ARRAYS IF THEY ARE DYNAMIC
-	//unregister listener
+	events.unregisterListener(startGameListenerA);
+	events.unregisterListener(startGameListenerB);
+	events.unregisterListener(startGameListenerS);
 }
 
 

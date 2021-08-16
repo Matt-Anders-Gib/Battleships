@@ -7,18 +7,8 @@ void EventQueue::registerListener(Listener& l) {
 }
 
 
-const bool EventQueue::unregisterListener(const unsigned short id) {
-	Listener *l = firstListener();
-	Listener *parent = 
-
-	while(l) {
-		if(l == id) {
-			//remove from linked list
-			return true;
-		}
-	}
-
-	return false;
+const bool EventQueue::unregisterListener(const Listener& oldListener) {
+	return listeners.remove(oldListener);
 }
 
 
