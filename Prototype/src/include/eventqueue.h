@@ -1,6 +1,8 @@
 #ifndef EVENTQUEUE_H
 #define EVENTQUEUE_H
 
+#include "Arduino.h" //DEBUG ONLY
+
 #include "ringbuffer.h"
 #include "linkedlist.h"
 
@@ -29,8 +31,8 @@ private:
 	Gib::LinkedList<Listener> listeners = Gib::LinkedList<Listener>();
 	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>();
 public:
-	void registerListener(Listener& l);
-	const bool unregisterListener(const Listener& oldListener);
+	void registerListener(Listener& addListener);
+	const bool unregisterListener(const Listener& removeListener);
 	Gib::LinkedListNode<Listener>* firstListener() {return listeners.getHead();}
 
 	void enqueue(const EVENT_TYPE e);

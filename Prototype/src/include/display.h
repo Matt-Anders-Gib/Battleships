@@ -45,6 +45,8 @@ protected:
 	uint16_t calcH = 0;
 public:
 	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {}
+	//virtual GameScene() = 0;
+	virtual ~GameScene() {};
 	virtual void draw(unsigned long long nowMS) = 0;
 };
 

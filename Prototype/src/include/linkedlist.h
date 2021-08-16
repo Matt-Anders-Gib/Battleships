@@ -2,6 +2,9 @@
 #define LINKEDLIST_H
 
 
+#include "Arduino.h"
+
+
 namespace Gib {
 	template <class T>
 	class LinkedListNode {

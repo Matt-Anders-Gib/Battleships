@@ -1,6 +1,7 @@
 #include "include/display.h"
 
 
+
 TitleScreen::TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
@@ -50,9 +51,12 @@ void TitleScreen::draw(unsigned long long nowMS) {
 
 TitleScreen::~TitleScreen() {
 	//DELETE CHAR ARRAYS IF THEY ARE DYNAMIC
-	events.unregisterListener(startGameListenerA);
-	events.unregisterListener(startGameListenerB);
-	events.unregisterListener(startGameListenerS);
+
+	Serial.println(F("TitleScreen destructor"));
+	
+	Serial.print(events.unregisterListener(startGameListenerA));
+	Serial.print(events.unregisterListener(startGameListenerB));
+	Serial.print(events.unregisterListener(startGameListenerS));
 }
 
 
@@ -71,14 +75,19 @@ void MainMenu::draw(unsigned long long nowMS) {
 
 
 MainMenu::~MainMenu() {
-
+	Serial.println(F("Main Menu destructor"));
 }
 
 
 void Display::leaveTitleScreen() {
+	Serial.println(F("leave title screen"));
+
 	clear();
 
+	Serial.println(F("attempting scene delete"));
 	delete currentScene;
+	Serial.println(F("currentScene deleted"));
+
 	currentScene = new MainMenu(oled, loc, events);
 }
 
