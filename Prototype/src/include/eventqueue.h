@@ -19,8 +19,7 @@ struct Listener {
 	EVENT_TYPE eventType;
 	virtual void operator()() = 0;
 
-	const bool operator==(const Listener& o) {return id == o.id;}
-	const bool operator==(const unsigned short oID) {return id == oID;}
+	const bool operator==(const Listener& o) const {return id == o.id;}
 };
 
 
@@ -31,7 +30,7 @@ private:
 	Gib::RingBuffer<Event> events = Gib::RingBuffer<Event>();
 public:
 	void registerListener(Listener& l);
-	const bool unregisterListener(const unsigned short id);
+	const bool unregisterListener(const Listener& oldListener);
 	Gib::LinkedListNode<Listener>* firstListener() {return listeners.getHead();}
 
 	void enqueue(const EVENT_TYPE e);
