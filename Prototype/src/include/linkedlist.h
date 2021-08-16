@@ -16,9 +16,11 @@ namespace Gib {
 
 		void enqueue(T& obj);
 		LinkedListNode<T>* dequeue();
+		const bool remove(const T& o);
 
 		T& getData() {return data;}
 		LinkedListNode<T>* getNextNode() {return nextNode;}
+		void setNextNode(LinkedListNode<T>* n) {nextNode = n;} //Be careful! Can easily leak memory.
 	};
 }
 
@@ -62,6 +64,25 @@ Gib::LinkedListNode<T>* Gib::LinkedListNode<T>::dequeue() {
 
 
 
+template <class T>
+const bool Gib::LinkedListNode<T>::remove(const T& o) {
+	if(!nextNode) {
+		return false;
+	}
+
+	if(o == nextNode->getData()) {
+		LinkedListNode<T>* oldChildNode = getNextNode();
+		nextNode = oldChildNode->getNextNode();
+		oldChildNode->setNextNode(nullptr);
+		delete oldChildNode;
+		return true;
+	} else {
+		return nextNode->remove(o);
+	}
+}
+
+
+
 namespace Gib {
 	template <class T>
 	class LinkedList {
@@ -76,6 +97,7 @@ namespace Gib {
 
 		void enqueue(T& obj);
 		T* dequeue();
+		const bool remove(const T& obj);
 	};
 }
 
@@ -119,6 +141,36 @@ T* Gib::LinkedList<T>::dequeue() {
 	}
 
 	return &head->dequeue()->getData();
+}
+
+
+template <class T>
+const bool Gib::LinkedList<T>::remove(const T& o) {
+	if(!head) {
+		return false;
+	}
+
+	if(o == head->getData()) {
+		LinkedListNode<T>* oldHead = head;
+		head = oldHead->getNextNode();
+		oldHead->setNextNode(nullptr);
+		delete oldHead;
+		return true;
+	} else {
+		if(!head->getNextNode()) {
+			return false;
+		}
+
+		if(o == head->getNextNode()->getData()) {
+			LinkedListNode<T>* oldChildNode = head->getNextNode();
+			head->setNextNode(oldChildNode->getNextNode());
+			oldChildNode->setNextNode(nullptr);
+			delete oldChildNode;
+			return true;
+		}
+
+		return head->remove(o);
+	}
 }
 
 #endif
