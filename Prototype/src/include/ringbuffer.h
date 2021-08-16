@@ -21,7 +21,8 @@ namespace Gib {
 		T& updateTail(); //push
 		T& getHead(); //pop
 
-		const bool empty() {return headIndex == tailIndex;}
+		const bool full() const {return count == BUFFER_SIZE - 1;}
+		const bool empty() const {return count == 0;}
 		const unsigned short getCount() const {return count;}
 	};
 }
