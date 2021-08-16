@@ -13,6 +13,8 @@ namespace Gib {
 
 		unsigned short headIndex = 0;
 		unsigned short tailIndex = 0;
+
+		unsigned short count = 0;
 	public:
 		RingBuffer<T>();
 
@@ -20,6 +22,7 @@ namespace Gib {
 		T& getHead(); //pop
 
 		const bool empty() {return headIndex == tailIndex;}
+		const unsigned short getCount() const {return count;}
 	};
 }
 
@@ -36,6 +39,7 @@ template <class T>
 T& Gib::RingBuffer<T>::updateTail() {
 	held = &buffer[tailIndex];
 	tailIndex += 1;
+	count += 1;
 
 	if(tailIndex == BUFFER_SIZE) {
 		tailIndex = 0;
@@ -59,6 +63,7 @@ T& Gib::RingBuffer<T>::getHead() {
 	//buffer[headIndex] = nullptr;
 
 	headIndex += 1;
+	count -= 1;
 	if(headIndex == BUFFER_SIZE) {
 		headIndex = 0;
 	}
