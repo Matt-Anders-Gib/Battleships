@@ -52,11 +52,9 @@ void TitleScreen::draw(unsigned long long nowMS) {
 TitleScreen::~TitleScreen() {
 	//DELETE CHAR ARRAYS IF THEY ARE DYNAMIC
 
-	Serial.println(F("TitleScreen destructor"));
-	
-	Serial.print(events.unregisterListener(startGameListenerA));
-	Serial.print(events.unregisterListener(startGameListenerB));
-	Serial.print(events.unregisterListener(startGameListenerS));
+	events.unregisterListener(startGameListenerA);
+	events.unregisterListener(startGameListenerB);
+	events.unregisterListener(startGameListenerS);
 }
 
 
@@ -75,19 +73,14 @@ void MainMenu::draw(unsigned long long nowMS) {
 
 
 MainMenu::~MainMenu() {
-	Serial.println(F("Main Menu destructor"));
+	
 }
 
 
 void Display::leaveTitleScreen() {
-	Serial.println(F("leave title screen"));
-
 	clear();
 
-	Serial.println(F("attempting scene delete"));
 	delete currentScene;
-	Serial.println(F("currentScene deleted"));
-
 	currentScene = new MainMenu(oled, loc, events);
 }
 

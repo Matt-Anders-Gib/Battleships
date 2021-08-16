@@ -1,8 +1,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include "Arduino.h"
-
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1331.h>
 #include <SPI.h>
@@ -66,7 +64,6 @@ struct TitleScreenListener : public Listener {
 	}
 
 	void operator()() {
-		Serial.println(F("Exit Main Menu!"));
 		(displayObject->*callback)();
 	}
 };

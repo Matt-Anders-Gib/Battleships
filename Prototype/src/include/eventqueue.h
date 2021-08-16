@@ -1,8 +1,6 @@
 #ifndef EVENTQUEUE_H
 #define EVENTQUEUE_H
 
-#include "Arduino.h" //DEBUG ONLY
-
 #include "ringbuffer.h"
 #include "linkedlist.h"
 
