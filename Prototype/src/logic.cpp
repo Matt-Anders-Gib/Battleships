@@ -23,7 +23,7 @@ void Logic::update(EventQueue& events) {
 		}
 
 		if(!eventUsed) {
-			Serial.print(F("Event wasted"));
+			Serial.println(F("Event wasted"));
 		}
 	}
 }

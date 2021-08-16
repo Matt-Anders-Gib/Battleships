@@ -42,9 +42,9 @@ protected:
 	uint16_t calcW = 0;
 	uint16_t calcH = 0;
 public:
-	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {}
+	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {} //make pure virtual?
 	//virtual GameScene() = 0;
-	virtual ~GameScene() {};
+	virtual ~GameScene() {}; //make pure?
 	virtual void draw(unsigned long long nowMS) = 0;
 };
 
@@ -94,8 +94,9 @@ public:
 class MainMenu : public GameScene {
 private:
 	const char* titleString;
-
-
+	const char* playString;
+	const char* optionsString;
+	const char* quitString;
 public:
 	MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);

@@ -60,10 +60,32 @@ TitleScreen::~TitleScreen() {
 
 MainMenu::MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
 	titleString = loc.getLocalizedString(LOC_TITLE);
+	playString = loc.getLocalizedString(LOC_PLAY);
+	optionsString = loc.getLocalizedString(LOC_OPTIONS);
+	quitString = loc.getLocalizedString(LOC_QUIT);
 
 	oled.getTextBounds(titleString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.drawLine((DISPLAY_WIDTH - calcW)/2, calcY + calcH, DISPLAY_WIDTH - (DISPLAY_WIDTH - calcW)/2, calcY + calcH, RED);
 	oled.setCursor((DISPLAY_WIDTH - calcW)/2, TEXT_VERTICAL_MARGIN);
 	oled.print(titleString);
+
+	
+
+	unsigned short lineBottom = calcY + calcH;
+
+	oled.getTextBounds(playString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.setCursor((DISPLAY_WIDTH - calcW)/2, lineBottom + TEXT_VERTICAL_MARGIN + calcH);
+	oled.print(playString);
+	lineBottom = lineBottom + TEXT_VERTICAL_MARGIN + calcH;
+
+	oled.getTextBounds(optionsString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.setCursor((DISPLAY_WIDTH - calcW)/2, lineBottom + TEXT_VERTICAL_MARGIN + calcH);
+	oled.print(optionsString);
+	lineBottom = lineBottom + TEXT_VERTICAL_MARGIN + calcH;
+
+	oled.getTextBounds(quitString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.setCursor((DISPLAY_WIDTH - calcW)/2, lineBottom + TEXT_VERTICAL_MARGIN + calcH);
+	oled.print(quitString);
 }
 
 
