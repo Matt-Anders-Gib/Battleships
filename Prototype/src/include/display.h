@@ -20,9 +20,6 @@
 #define WHITE 0xFFFF
 
 
-class Display;
-
-
 class GameScene {
 private:
 protected:
@@ -44,20 +41,43 @@ protected:
 public:
 	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {} //make pure virtual?
 	//virtual GameScene() = 0;
-	virtual ~GameScene() {}; //make pure?
+	virtual ~GameScene() {}
 	virtual void draw(unsigned long long nowMS) = 0;
 };
 
 
-struct TitleScreenListener : public Listener {
+class Display {
+private:
+	const static unsigned char DISPLAY_PIN_DC = 8;
+	const static unsigned char DISPLAY_PIN_RST = 9;
+	const static unsigned char DISPLAY_PIN_CS = 10;
+	const static unsigned char DISPLAY_PIN_MOSI = 11;
+	const static unsigned char DISPLAY_PIN_SCLK = 13;
+
+	Adafruit_SSD1331 oled = Adafruit_SSD1331(DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_MOSI, DISPLAY_PIN_SCLK, DISPLAY_PIN_RST);
+	Localization loc;
+	EventQueue& events;
+
+	GameScene* currentScene;
+	void leaveTitleScreen();
+public:
+	Display(EventQueue& e);
+
+	void clear();
+	void setup();
+	void updateDisplay(unsigned long long nowMS);
+};
+
+
+struct DisplayListener : public Listener {
 	Display *displayObject;
 	void (Display::*callback)();
 
-	TitleScreenListener() {
+	DisplayListener() {
 		eventType = EVENT_TYPE::EVENT_NONE;
 	}
 
-	TitleScreenListener(Display *d, void (Display::*c)(), EVENT_TYPE e) {
+	DisplayListener(Display *d, void (Display::*c)(), EVENT_TYPE e) {
 		displayObject = d;
 		callback = c;
 		eventType = e;
@@ -71,9 +91,9 @@ struct TitleScreenListener : public Listener {
 
 class TitleScreen : public GameScene {
 private:
-	TitleScreenListener startGameListenerA;
-	TitleScreenListener startGameListenerB;
-	TitleScreenListener startGameListenerS;
+	DisplayListener startGameListenerA;
+	DisplayListener startGameListenerB;
+	DisplayListener startGameListenerS;
 
 	const char* titleFirstString;
 	const char* titleLastString;
@@ -101,29 +121,6 @@ public:
 	MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~MainMenu();
-};
-
-
-class Display {
-private:
-	const static unsigned char DISPLAY_PIN_DC = 8;
-	const static unsigned char DISPLAY_PIN_RST = 9;
-	const static unsigned char DISPLAY_PIN_CS = 10;
-	const static unsigned char DISPLAY_PIN_MOSI = 11;
-	const static unsigned char DISPLAY_PIN_SCLK = 13;
-
-	Adafruit_SSD1331 oled = Adafruit_SSD1331(DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_MOSI, DISPLAY_PIN_SCLK, DISPLAY_PIN_RST);
-	Localization loc;
-	EventQueue& events;
-
-	GameScene* currentScene;
-	void leaveTitleScreen();
-public:
-	Display(EventQueue& e);
-
-	void clear();
-	void setup();
-	void updateDisplay(unsigned long long nowMS);
 };
 
 #endif

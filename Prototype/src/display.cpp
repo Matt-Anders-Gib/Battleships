@@ -22,11 +22,11 @@ TitleScreen::TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, 
 	oled.print(titleLastString);
 
 	oled.setTextSize(1);
-	oled.getTextBounds(startPromptString, 0, 0, &calcX, &calcY, &calcW, &calcH);
+	oled.getTextBounds(startPromptString, (DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN, &calcX, &calcY, &calcW, &calcH);
 
-	startGameListenerA = TitleScreenListener(d, c, EVENT_TYPE::EVENT_A_BUTTON_DOWN);
-	startGameListenerB = TitleScreenListener(d, c, EVENT_TYPE::EVENT_B_BUTTON_DOWN);
-	startGameListenerS = TitleScreenListener(d, c, EVENT_TYPE::EVENT_S_BUTTON_DOWN);
+	startGameListenerA = DisplayListener(d, c, EVENT_TYPE::EVENT_A_BUTTON_DOWN);
+	startGameListenerB = DisplayListener(d, c, EVENT_TYPE::EVENT_B_BUTTON_DOWN);
+	startGameListenerS = DisplayListener(d, c, EVENT_TYPE::EVENT_S_BUTTON_DOWN);
 	e.registerListener(startGameListenerA);
 	e.registerListener(startGameListenerB);
 	e.registerListener(startGameListenerS);
@@ -40,18 +40,16 @@ void TitleScreen::draw(unsigned long long nowMS) {
 
 		if(startTextVisible) {
 			oled.setTextColor(WHITE);
-			oled.setCursor((DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN); //store this calculation
+			oled.setCursor(calcX, calcY);
 			oled.print(startPromptString);
 		} else {
-			oled.fillRect((DISPLAY_WIDTH - calcW)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN, calcW, calcH, BLACK); //store this calculation
+			oled.fillRect(calcX, calcY, calcW, calcH, BLACK);
 		}
 	}
 }
 
 
 TitleScreen::~TitleScreen() {
-	//DELETE CHAR ARRAYS IF THEY ARE DYNAMIC
-
 	events.unregisterListener(startGameListenerA);
 	events.unregisterListener(startGameListenerB);
 	events.unregisterListener(startGameListenerS);
