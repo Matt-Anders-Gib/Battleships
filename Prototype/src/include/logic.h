@@ -12,9 +12,10 @@ class Logic {
 private:
 	GAME_SCREEN lastScreen = GAME_SCREEN::NONE;
 
+	Event eventNone = Event();
+	Event& currentEvent = eventNone;
 	bool eventUsed = false;
 
-	//Event& currentEvent;
 	Gib::LinkedListNode<Listener>* currentListener;
 public:
 	Logic();

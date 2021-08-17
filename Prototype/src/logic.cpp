@@ -8,7 +8,7 @@ Logic::Logic() {
 
 void Logic::update(EventQueue& events) {
 	while(!events.empty()) {
-		Event& currentEvent = events.dequeue(); //do not declare every cycle!
+		currentEvent = events.dequeue();
 		eventUsed = false; 
 
 		currentListener = events.firstListener();
@@ -23,7 +23,8 @@ void Logic::update(EventQueue& events) {
 		}
 
 		if(!eventUsed) {
-			Serial.println(F("Event wasted"));
+			Serial.print(F("Event discarded: "));
+			Serial.println(static_cast<int>(currentEvent.type));
 		}
 	}
 }
