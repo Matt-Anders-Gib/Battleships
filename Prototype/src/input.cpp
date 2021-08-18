@@ -8,48 +8,12 @@ void Input::poll(EventQueue& events, const unsigned long long nowMS) {
 				if(b.getState() == BUTTON_UP) {
 					continue;
 				} else {
-					switch(b.getName()) {
-					case 'A':
-						events.enqueue(EVENT_TYPE::EVENT_RAW_A_BUTTON_UP);
-					break;
-
-					case 'B':
-						events.enqueue(EVENT_TYPE::EVENT_RAW_B_BUTTON_UP);
-					break;
-
-					case 'S':
-						events.enqueue(EVENT_TYPE::EVENT_RAW_S_BUTTON_UP);
-					break;
-
-					default:
-						//log error: unknown button
-						Serial.println(F("Unknown Input Button Up"));
-					break;
-					}
-
+					events.enqueue(EVENT_TYPE::EVENT_RAW_BUTTON_UP, b.getName());
 					b.up();
 				}
 			} else {
 				if(b.getState() == BUTTON_UP) {
-					switch(b.getName()) {
-					case 'A':
-						events.enqueue(EVENT_TYPE::EVENT_RAW_A_BUTTON_DOWN);
-					break;
-
-					case 'B':
-						events.enqueue(EVENT_TYPE::EVENT_RAW_B_BUTTON_DOWN);
-					break;
-
-					case 'S':
-						events.enqueue(EVENT_TYPE::EVENT_RAW_S_BUTTON_DOWN);
-					break;
-
-					default:
-						//log error: unknown button
-						Serial.println(F("Unknown Input Button Down"));
-					break;
-					}
-
+					events.enqueue(EVENT_TYPE::EVENT_RAW_BUTTON_DOWN, b.getName());
 					b.down(nowMS);
 				}
 			}

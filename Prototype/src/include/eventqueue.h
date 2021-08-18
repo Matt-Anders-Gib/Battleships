@@ -8,18 +8,22 @@
 enum class EVENT_TYPE : int {
 	EVENT_NONE = 0,
 
-	EVENT_RAW_A_BUTTON_DOWN = 1,
+	EVENT_RAW_BUTTON_UP = 1,
+	EVENT_RAW_BUTTON_DOWN = 2
+
+	/*EVENT_RAW_A_BUTTON_DOWN = 1,
 	EVENT_RAW_A_BUTTON_UP = 2,
 	EVENT_RAW_B_BUTTON_DOWN = 3,
 	EVENT_RAW_B_BUTTON_UP = 4,
 	EVENT_RAW_S_BUTTON_DOWN = 5,
-	EVENT_RAW_S_BUTTON_UP = 6
+	EVENT_RAW_S_BUTTON_UP = 6*/
 };
 
 
 struct Event {
 	EVENT_TYPE type = EVENT_TYPE::EVENT_NONE;
-	void overwrite(const EVENT_TYPE e) {type = e;}
+	unsigned char attribute = 0;
+	void overwrite(const EVENT_TYPE e, const unsigned char a) {type = e; attribute = a;}
 };
 
 
@@ -42,7 +46,7 @@ public:
 	const bool unregisterListener(const Listener& removeListener);
 	Gib::LinkedListNode<Listener>* firstListener() {return listeners.getHead();}
 
-	void enqueue(const EVENT_TYPE e);
+	void enqueue(const EVENT_TYPE e, const unsigned char a);
 	Event& dequeue(); //WANRING: always check empty() first
 
 	const bool empty();

@@ -12,8 +12,8 @@ const bool EventQueue::unregisterListener(const Listener& removeListener) {
 }
 
 
-void EventQueue::enqueue(const EVENT_TYPE e) {
-	events.updateTail().overwrite(e);
+void EventQueue::enqueue(const EVENT_TYPE e, const unsigned char a) {
+	events.updateTail().overwrite(e, a);
 }
 
 
