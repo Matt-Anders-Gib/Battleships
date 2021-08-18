@@ -20,6 +20,19 @@
 #define WHITE 0xFFFF
 
 
+namespace Gib {
+	struct Rect {
+		int16_t x;
+		int16_t y;
+		uint16_t w;
+		uint16_t h;
+
+		Rect() : x{0}, y{0}, w{0}, h{0} {}
+		Rect(int16_t vX, int16_t vY, uint16_t vW, uint16_t vH) : x{vX}, y{vY}, w{vW}, h{vH} {}
+	};
+}
+
+
 class GameScene {
 private:
 protected:
@@ -34,10 +47,7 @@ protected:
 	const static uint8_t TEXT_HORIZONTAL_MARGIN = 9;
 	const static uint8_t TEXT_VERTICAL_MARGIN = 5;
 
-	int16_t calcX = 0;
-	int16_t calcY = 0;
-	uint16_t calcW = 0;
-	uint16_t calcH = 0;
+	Gib::Rect calc;
 public:
 	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {} //make pure virtual?
 	//virtual GameScene() = 0;
@@ -91,9 +101,7 @@ struct DisplayListener : public Listener {
 
 class TitleScreen : public GameScene {
 private:
-	DisplayListener startGameListenerA;
-	DisplayListener startGameListenerB;
-	DisplayListener startGameListenerS;
+	DisplayListener startGameListener;
 
 	const char* titleFirstString;
 	const char* titleLastString;
@@ -117,6 +125,13 @@ private:
 	const char* playString;
 	const char* optionsString;
 	const char* quitString;
+
+	Gib::Rect playButtonRect;
+	Gib::Rect optionsButtonRect;
+	Gib::Rect quitButtonRect;
+
+	unsigned char selectedMenu = 'B';
+	unsigned char lastSelectedMenu = 0;
 public:
 	MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);

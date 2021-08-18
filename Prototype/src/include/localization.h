@@ -8,7 +8,7 @@ enum LOCALIZABLE_STRINGS : unsigned short {LOC_TITLE = 0, LOC_TITLE_FIRST = 1, L
 class Localization {
 private:
 	static const unsigned short LOCALIZED_STRINGS_COUNT = 7;
-	const char* text[LOCALIZED_STRINGS_COUNT] = {"STRIFE SLOOPS", "STRIFE", "SLOOPS", "Press Any Key", "Play", "Options", "Quit"};
+	const char* text[LOCALIZED_STRINGS_COUNT] = {"STRIFE SLOOPS", "STRIFE", "SLOOPS", "Press Any Key", "Battle", "Options", "Quit"};
 
 	static const constexpr char* ERROR_TEXT = "error";
 public:
