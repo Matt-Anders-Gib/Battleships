@@ -32,9 +32,9 @@ template <class T>
 const unsigned short Gib::LinkedListNode<T>::childCount() {
 	if(!nextNode) {
 		return 1;
+	} else {
+		return nextNode->childCount() + 1;
 	}
-
-	return nextNode->childCount() + 1;
 }
 
 

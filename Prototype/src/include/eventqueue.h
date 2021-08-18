@@ -49,6 +49,7 @@ public:
 	Event& dequeue(); //WANRING: always check empty() first
 
 	const bool empty();
+	const unsigned short listenersSize() {return listeners.size();}
 };
 
 
