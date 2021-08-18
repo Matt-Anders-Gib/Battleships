@@ -11,7 +11,7 @@ EventQueue events = EventQueue();
 
 Input input;
 
-Logic logicController = Logic();
+Logic logicController = Logic(events);
 Network net;
 Display oled = Display(events);
 
@@ -20,8 +20,10 @@ void loop() {
 	input.poll(events, millis());
 	net.processIncoming();
 
-	logicController.update(events);
+Serial.println(F("Pre logic update"));
+	logicController.update();
 	net.processOutgoing();
+Serial.println(F("Pre display update"));
 	oled.updateDisplay(millis());
 }
 

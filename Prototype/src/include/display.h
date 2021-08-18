@@ -84,21 +84,21 @@ public:
 
 
 struct DisplayListener : public Listener {
-	Display *displayObject;
+	Display *activeObject;
 	void (Display::*callback)(Event& e);
 
 	DisplayListener() {
 		eventType = EVENT_TYPE::EVENT_NONE;
 	}
 
-	DisplayListener(Display *d, void (Display::*c)(Event& e), EVENT_TYPE e) {
-		displayObject = d;
+	DisplayListener(Display *a, void (Display::*c)(Event& e), EVENT_TYPE e) {
+		activeObject = a;
 		callback = c;
 		eventType = e;
 	}
 
 	void operator()(Event& e) {
-		(displayObject->*callback)(e);
+		(activeObject->*callback)(e);
 	}
 };
 

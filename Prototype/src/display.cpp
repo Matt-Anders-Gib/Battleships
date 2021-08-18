@@ -80,15 +80,19 @@ MainMenu::MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2
 	oled.setCursor(quitButtonRect.x, quitButtonRect.y);
 	oled.print(quitString);
 
+Serial.println(F("Before main menu listener creation"));
 	selectionChangeListener = DisplayListener(d, c1, EVENT_TYPE::EVENT_SELECTION_CHANGE);
 	selectedMenuListener = DisplayListener(d, c2, EVENT_TYPE::EVENT_INPUT_DOWN);
+Serial.println(F("Before main menu listener register"));
 	e.registerListener(selectionChangeListener);
 	e.registerListener(selectedMenuListener);
+Serial.println(F("End of main menu constructor"));
 }
 
 
 void MainMenu::draw(unsigned long long nowMS) {
 	if(selectedMenu != lastSelectedMenu) {
+		Serial.println(F("Selected menu mismatch"));
 		switch(lastSelectedMenu) { //redraw old button
 		case 'B':
 			oled.fillRect(playButtonRect.x, playButtonRect.y, playButtonRect.w, playButtonRect.h, BLACK);
