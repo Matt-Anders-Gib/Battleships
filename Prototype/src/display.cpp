@@ -2,7 +2,7 @@
 
 
 
-TitleScreen::TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
+TitleScreen::TitleScreen(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
 	startPromptString = loc.getLocalizedString(LOC_START_PROMPT);
@@ -24,7 +24,7 @@ TitleScreen::TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, 
 	oled.setTextSize(1);
 	oled.getTextBounds(startPromptString, (DISPLAY_WIDTH - calc.w)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN, &calc.x, &calc.y, &calc.w, &calc.h);
 
-	startGameListener = DisplayListener(d, c, EVENT_TYPE::EVENT_RAW_INPUT_DOWN);
+	startGameListener = DisplayListener(d, c, EVENT_TYPE::EVENT_INPUT_DOWN);
 	e.registerListener(startGameListener);
 }
 
@@ -50,7 +50,7 @@ TitleScreen::~TitleScreen() {
 }
 
 
-MainMenu::MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
+MainMenu::MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
 	titleString = loc.getLocalizedString(LOC_TITLE);
 	playString = loc.getLocalizedString(LOC_PLAY);
 	optionsString = loc.getLocalizedString(LOC_OPTIONS);
@@ -61,8 +61,6 @@ MainMenu::MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSc
 	oled.setCursor((DISPLAY_WIDTH - calc.w)/2, TEXT_VERTICAL_MARGIN);
 	oled.print(titleString);
 
-	
-
 	unsigned short lineBottom = calc.y + calc.h;
 
 	oled.getTextBounds(playString, 0, 0, &calc.x, &calc.y, &calc.w, &calc.h);
@@ -71,18 +69,21 @@ MainMenu::MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSc
 	oled.setCursor(playButtonRect.x, playButtonRect.y);
 	oled.print(playString);
 
-
 	oled.getTextBounds(optionsString, 0, 0, &calc.x, &calc.y, &calc.w, &calc.h);
 	optionsButtonRect = Gib::Rect((DISPLAY_WIDTH - calc.w)/2, lineBottom + TEXT_VERTICAL_MARGIN + calc.h, calc.w, calc.h);
 	lineBottom = lineBottom + TEXT_VERTICAL_MARGIN + calc.h;
 	oled.setCursor(optionsButtonRect.x, optionsButtonRect.y);
 	oled.print(optionsString);
 
-
 	oled.getTextBounds(quitString, 0, 0, &calc.x, &calc.y, &calc.w, &calc.h);
 	quitButtonRect = Gib::Rect((DISPLAY_WIDTH - calc.w)/2, lineBottom + TEXT_VERTICAL_MARGIN + calc.h, calc.w, calc.h);
 	oled.setCursor(quitButtonRect.x, quitButtonRect.y);
 	oled.print(quitString);
+
+	selectionChangeListener = DisplayListener(d, c1, EVENT_TYPE::EVENT_SELECTION_CHANGE);
+	selectedMenuListener = DisplayListener(d, c2, EVENT_TYPE::EVENT_INPUT_DOWN);
+	e.registerListener(selectionChangeListener);
+	e.registerListener(selectedMenuListener);
 }
 
 
@@ -154,11 +155,21 @@ MainMenu::~MainMenu() {
 }
 
 
-void Display::leaveTitleScreen() {
+void Display::mainMenuChangeSelectedButton(Event& e) {
+
+}
+
+
+void Display::mainMenuButtonSelected(Event& e) {
+
+}
+
+
+void Display::leaveTitleScreen(Event& e) {
 	clear();
 
 	delete currentScene;
-	currentScene = new MainMenu(oled, loc, events);
+	currentScene = new MainMenu(this, &Display::mainMenuChangeSelectedButton, &Display::mainMenuButtonSelected, oled, loc, events);
 }
 
 

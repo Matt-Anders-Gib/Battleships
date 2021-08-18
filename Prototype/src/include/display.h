@@ -69,7 +69,11 @@ private:
 	EventQueue& events;
 
 	GameScene* currentScene;
-	void leaveTitleScreen();
+
+	void leaveTitleScreen(Event& e);
+
+	void mainMenuChangeSelectedButton(Event& e);
+	void mainMenuButtonSelected(Event& e);
 public:
 	Display(EventQueue& e);
 
@@ -81,20 +85,20 @@ public:
 
 struct DisplayListener : public Listener {
 	Display *displayObject;
-	void (Display::*callback)();
+	void (Display::*callback)(Event& e);
 
 	DisplayListener() {
 		eventType = EVENT_TYPE::EVENT_NONE;
 	}
 
-	DisplayListener(Display *d, void (Display::*c)(), EVENT_TYPE e) {
+	DisplayListener(Display *d, void (Display::*c)(Event& e), EVENT_TYPE e) {
 		displayObject = d;
 		callback = c;
 		eventType = e;
 	}
 
-	void operator()() {
-		(displayObject->*callback)();
+	void operator()(Event& e) {
+		(displayObject->*callback)(e);
 	}
 };
 
@@ -113,7 +117,7 @@ private:
 	static const unsigned short START_TEXT_STATE_CHANGE_THRESHOLD_MS = 1337;
 	bool startTextVisible = false;
 public:
-	TitleScreen(Display *d, void (Display::*c)(), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
+	TitleScreen(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~TitleScreen();
 };
@@ -121,6 +125,9 @@ public:
 
 class MainMenu : public GameScene {
 private:
+	DisplayListener selectionChangeListener;
+	DisplayListener selectedMenuListener;
+
 	const char* titleString;
 	const char* playString;
 	const char* optionsString;
@@ -133,7 +140,7 @@ private:
 	unsigned char selectedMenu = 'B';
 	unsigned char lastSelectedMenu = 0;
 public:
-	MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e);
+	MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~MainMenu();
 };

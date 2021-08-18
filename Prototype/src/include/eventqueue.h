@@ -8,17 +8,14 @@
 enum class EVENT_TYPE : int {
 	EVENT_NONE = 0,
 
-	EVENT_RAW_INPUT_UP = 1,
-	EVENT_RAW_INPUT_DOWN = 2,
+	EVENT_RAW_BUTTON_UP = 1,
+	EVENT_RAW_BUTTON_DOWN = 2,
 
-	EVENT_MENU_SELECTION_CHANGED = 3
+	EVENT_INPUT_DOWN = 3,
+	EVENT_INPUT_UP = 4,
 
-	/*EVENT_BUTTON_A_UP = 3,
-	EVENT_BUTTON_A_DOWN = 4,
-	EVENT_BUTTON_B_UP = 5,
-	EVENT_BUTTON_B_DOWN = 6,
-	EVENT_BUTTON_S_UP = 7,
-	EVENT_BUTTON_S_DOWN = 8*/
+	EVENT_SELECTION_CHANGE = 5,
+	EVENT_MENU_SELECTION_CHANGED = 6
 };
 
 
@@ -32,7 +29,7 @@ struct Event {
 struct Listener {
 	unsigned short id;
 	EVENT_TYPE eventType;
-	virtual void operator()() = 0;
+	virtual void operator()(Event& e) = 0;
 
 	const bool operator==(const Listener& o) const {return id == o.id;}
 };
