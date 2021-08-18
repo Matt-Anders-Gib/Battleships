@@ -13,7 +13,6 @@ void Logic::update(EventQueue& events) {
 
 		currentListener = events.firstListener();
 		while(currentListener != nullptr) {
-
 			if(currentEvent.type == currentListener->getData().eventType) {
 				currentListener->getData()();
 				eventUsed = true;
