@@ -88,9 +88,36 @@ MainMenu::MainMenu(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSc
 
 void MainMenu::draw(unsigned long long nowMS) {
 	if(selectedMenu != lastSelectedMenu) {
-		events.enqueue(EVENT_TYPE::EVENT_MENU_SELECTION_CHANGED, 0);
+		switch(lastSelectedMenu) { //redraw old button
+		case 'B':
+			oled.fillRect(playButtonRect.x, playButtonRect.y, playButtonRect.w, playButtonRect.h, BLACK);
+			oled.setTextColor(WHITE);
+			oled.setCursor(playButtonRect.x, playButtonRect.y);
+			oled.print(playString);
+		break;
 
-		switch(selectedMenu) {
+		case 'O':
+			oled.fillRect(optionsButtonRect.x, optionsButtonRect.y, optionsButtonRect.w, optionsButtonRect.h, BLACK);
+			oled.setTextColor(WHITE);
+			oled.setCursor(optionsButtonRect.x, optionsButtonRect.y);
+			oled.print(optionsString);
+		break;
+
+		case 'Q':
+			oled.fillRect(quitButtonRect.x, quitButtonRect.y, quitButtonRect.w, quitButtonRect.h, BLACK);
+			oled.setTextColor(WHITE);
+			oled.setCursor(quitButtonRect.x, quitButtonRect.y);
+			oled.print(quitString);
+		break;
+
+		default:
+			//log error: unknown last menu!
+		break;
+		}
+
+		lastSelectedMenu = selectedMenu;
+
+		switch(selectedMenu) { //draw new button
 		case 'B':
 			oled.fillRect(playButtonRect.x, playButtonRect.y, playButtonRect.w, playButtonRect.h, WHITE);
 			oled.setTextColor(BLACK);
@@ -117,7 +144,7 @@ void MainMenu::draw(unsigned long long nowMS) {
 		break;
 		}
 
-		lastSelectedMenu = selectedMenu;
+		events.enqueue(EVENT_TYPE::EVENT_MENU_SELECTION_CHANGED, 0);
 	}
 }
 
