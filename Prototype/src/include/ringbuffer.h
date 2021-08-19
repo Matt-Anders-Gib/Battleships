@@ -74,42 +74,6 @@ T& Gib::RingBuffer<T>::getHead() {
 	}
 
 	return *held;
-
-	/*if(headIndex == tailIndex) {
-		//queue is either full or empty- assume empty for safety
-		return nullptr;
-	}
-
-	held = buffer[headIndex];
-	buffer[headIndex] = nullptr;
-
-	headIndex += 1;
-	if(headIndex == BUFFER_SIZE) {
-		headIndex = 0;
-	}
-
-	if(headIndex == tailIndex) {
-		//now empty
-	}
-
-	return held;*/
 }
-
-
-/*
-template <class T>
-void Gib::RingBuffer<T>::push(T& obj) {
-	buffer[tailIndex] = &obj;
-	tailIndex += 1;
-
-	if(tailIndex == BUFFER_SIZE) {
-		tailIndex = 0;
-	}
-
-	if(tailIndex + 1 == headIndex) {
-		//log an error that next last available queue index was taken. Next enqueue may overwrite unprocessed objects
-	}
-}
-*/
 
 #endif

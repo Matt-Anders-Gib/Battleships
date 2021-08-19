@@ -35,9 +35,6 @@ private:
 	GAME_SCREEN lastScreen = GAME_SCREEN::NONE;
 
 	EventQueue& events;
-
-	Event eventNone = Event();
-	Event& currentEvent = eventNone;
 	bool eventUsed = false;
 
 	Gib::LinkedListNode<Listener>* currentListener;

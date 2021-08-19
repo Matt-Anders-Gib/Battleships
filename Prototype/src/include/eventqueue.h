@@ -8,8 +8,8 @@
 enum class EVENT_TYPE : int {
 	EVENT_NONE = 0,
 
-	EVENT_RAW_BUTTON_UP = 1,
-	EVENT_RAW_BUTTON_DOWN = 2,
+	EVENT_RAW_BUTTON_DOWN = 1,
+	EVENT_RAW_BUTTON_UP = 2,
 
 	EVENT_INPUT_DOWN = 3,
 	EVENT_INPUT_UP = 4,
@@ -49,6 +49,7 @@ public:
 	Event& dequeue(); //WANRING: always check empty() first
 
 	const bool empty();
+	const unsigned short count() {return events.getCount();}
 	const unsigned short listenersSize() {return listeners.size();}
 };
 

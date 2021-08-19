@@ -89,7 +89,6 @@ MainMenu::MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2
 
 void MainMenu::draw(unsigned long long nowMS) {
 	if(selectedMenu != lastSelectedMenu) {
-Serial.println(F("Selected menu mismatch"));
 		switch(lastSelectedMenu) { //redraw old button
 		case 'B':
 			oled.fillRect(playButtonRect.x, playButtonRect.y, playButtonRect.w, playButtonRect.h, BLACK);
