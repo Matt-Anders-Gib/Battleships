@@ -14,30 +14,15 @@ void Logic::convertRawButtonToInput(Event& e) {
 
 void Logic::update() {
 	while(!events.empty()) {
-		Serial.print(F("There are # pending events, "));
-		Serial.println(events.count());
-
 		Event& currentEvent = events.dequeue();
 		eventUsed = false;
 
-		Serial.print(F("Event: "));
-		Serial.println(static_cast<int>(currentEvent.type));
-
-		Serial.print(F("There are # registered listeners, "));
-		Serial.println(events.listenersSize());
-
 		currentListener = events.firstListener();
 		while(currentListener != nullptr) {
-			Serial.print(F("listener wants "));
-			Serial.flush();
-			Serial.println(static_cast<int>(currentListener->getData().eventType));
-
 			if(currentEvent.type == currentListener->getData().eventType) {
-				Serial.println(F("Event type and Listener match"));
 				currentListener->getData()(currentEvent);
 				eventUsed = true;
-			} else {
-				Serial.println(F("Event type and Listener do not match"));
+				break;
 			}
 
 			currentListener = currentListener->getNextNode();
