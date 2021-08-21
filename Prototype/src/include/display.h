@@ -90,7 +90,7 @@ struct DisplayListener : public Listener {
 		eventType = EVENT_TYPE::EVENT_NONE;
 	}
 
-	DisplayListener(Display *a, void (Display::*c)(Event& e), EVENT_TYPE e) {
+	DisplayListener(Display* a, void (Display::*c)(Event& e), EVENT_TYPE e) {
 		activeObject = a;
 		callback = c;
 		eventType = e;
@@ -116,7 +116,7 @@ private:
 	static const unsigned short START_TEXT_STATE_CHANGE_THRESHOLD_MS = 1337;
 	bool startTextVisible = false;
 public:
-	TitleScreenDisplay(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
+	TitleScreenDisplay(Display* d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~TitleScreenDisplay();
 };
@@ -139,7 +139,7 @@ private:
 	unsigned char selectedMenu = 'B';
 	unsigned char lastSelectedMenu = 0;
 public:
-	MainMenuDisplay(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
+	MainMenuDisplay(Display* d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
 	~MainMenuDisplay();
 };

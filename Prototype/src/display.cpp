@@ -2,7 +2,7 @@
 
 
 
-TitleScreenDisplay::TitleScreenDisplay(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSceneDisplay(o, l, e) {
+TitleScreenDisplay::TitleScreenDisplay(Display* d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSceneDisplay(o, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
 	startPromptString = loc.getLocalizedString(LOC_START_PROMPT);
@@ -50,7 +50,7 @@ TitleScreenDisplay::~TitleScreenDisplay() {
 }
 
 
-MainMenuDisplay::MainMenuDisplay(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSceneDisplay(o, l, e) {
+MainMenuDisplay::MainMenuDisplay(Display* d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSceneDisplay(o, l, e) {
 	titleString = loc.getLocalizedString(LOC_TITLE);
 	playString = loc.getLocalizedString(LOC_PLAY);
 	optionsString = loc.getLocalizedString(LOC_OPTIONS);
