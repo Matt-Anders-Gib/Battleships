@@ -2,7 +2,7 @@
 
 
 
-TitleScreen::TitleScreen(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
+TitleScreenDisplay::TitleScreenDisplay(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSceneDisplay(o, l, e) {
 	titleFirstString = loc.getLocalizedString(LOC_TITLE_FIRST);
 	titleLastString = loc.getLocalizedString(LOC_TITLE_LAST);
 	startPromptString = loc.getLocalizedString(LOC_START_PROMPT);
@@ -24,12 +24,12 @@ TitleScreen::TitleScreen(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1
 	oled.setTextSize(1);
 	oled.getTextBounds(startPromptString, (DISPLAY_WIDTH - calc.w)/2, bottomOfTitleY + TEXT_VERTICAL_MARGIN, &calc.x, &calc.y, &calc.w, &calc.h);
 
-	startGameListener = DisplayListener(d, c, EVENT_TYPE::EVENT_INPUT_DOWN);
+	startGameListener = DisplayListener(d, c, EVENT_TYPE::EVENT_TITLE_SCREEN_INPUT);
 	e.registerListener(startGameListener);
 }
 
 
-void TitleScreen::draw(unsigned long long nowMS) {
+void TitleScreenDisplay::draw(unsigned long long nowMS) {
 	if(lastStartTextStateChangeMS + START_TEXT_STATE_CHANGE_THRESHOLD_MS < nowMS) {
 		startTextVisible = !startTextVisible;
 		lastStartTextStateChangeMS = nowMS;
@@ -45,12 +45,12 @@ void TitleScreen::draw(unsigned long long nowMS) {
 }
 
 
-TitleScreen::~TitleScreen() {
+TitleScreenDisplay::~TitleScreenDisplay() {
 	events.unregisterListener(startGameListener);
 }
 
 
-MainMenu::MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameScene(o, l, e) {
+MainMenuDisplay::MainMenuDisplay(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e) : GameSceneDisplay(o, l, e) {
 	titleString = loc.getLocalizedString(LOC_TITLE);
 	playString = loc.getLocalizedString(LOC_PLAY);
 	optionsString = loc.getLocalizedString(LOC_OPTIONS);
@@ -87,7 +87,7 @@ MainMenu::MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2
 }
 
 
-void MainMenu::draw(unsigned long long nowMS) {
+void MainMenuDisplay::draw(unsigned long long nowMS) {
 	if(selectedMenu != lastSelectedMenu) {
 		switch(lastSelectedMenu) { //redraw old button
 		case 'B':
@@ -150,7 +150,7 @@ void MainMenu::draw(unsigned long long nowMS) {
 }
 
 
-MainMenu::~MainMenu() {
+MainMenuDisplay::~MainMenuDisplay() {
 	
 }
 
@@ -169,7 +169,7 @@ void Display::leaveTitleScreen(Event& e) {
 	clear();
 
 	delete currentScene;
-	currentScene = new MainMenu(this, &Display::mainMenuChangeSelectedButton, &Display::mainMenuButtonSelected, oled, loc, events);
+	currentScene = new MainMenuDisplay(this, &Display::mainMenuChangeSelectedButton, &Display::mainMenuButtonSelected, oled, loc, events);
 }
 
 
@@ -183,7 +183,7 @@ void Display::clear() {
 void Display::setup() {
 	oled.begin();
 	clear();
-	currentScene = new TitleScreen(this, &Display::leaveTitleScreen, oled, loc, events);
+	currentScene = new TitleScreenDisplay(this, &Display::leaveTitleScreen, oled, loc, events);
 }
 
 

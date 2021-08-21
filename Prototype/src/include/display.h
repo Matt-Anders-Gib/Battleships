@@ -5,7 +5,6 @@
 #include <Adafruit_SSD1331.h>
 #include <SPI.h>
 
-#include "global.h"
 #include "localization.h"
 #include "eventqueue.h"
 
@@ -33,7 +32,7 @@ namespace Gib {
 }
 
 
-class GameScene {
+class GameSceneDisplay {
 private:
 protected:
 	Adafruit_SSD1331& oled;
@@ -49,9 +48,9 @@ protected:
 
 	Gib::Rect calc;
 public:
-	GameScene(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {} //make pure virtual?
+	GameSceneDisplay(Adafruit_SSD1331& o, Localization& l, EventQueue& e) : oled{o}, loc{l}, events{e} {} //make pure virtual?
 	//virtual GameScene() = 0;
-	virtual ~GameScene() {}
+	virtual ~GameSceneDisplay() {}
 	virtual void draw(unsigned long long nowMS) = 0;
 };
 
@@ -68,7 +67,7 @@ private:
 	Localization loc;
 	EventQueue& events;
 
-	GameScene* currentScene;
+	GameSceneDisplay* currentScene;
 
 	void leaveTitleScreen(Event& e);
 
@@ -103,7 +102,7 @@ struct DisplayListener : public Listener {
 };
 
 
-class TitleScreen : public GameScene {
+class TitleScreenDisplay : public GameSceneDisplay {
 private:
 	DisplayListener startGameListener;
 
@@ -117,13 +116,13 @@ private:
 	static const unsigned short START_TEXT_STATE_CHANGE_THRESHOLD_MS = 1337;
 	bool startTextVisible = false;
 public:
-	TitleScreen(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
+	TitleScreenDisplay(Display *d, void (Display::*c)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
-	~TitleScreen();
+	~TitleScreenDisplay();
 };
 
 
-class MainMenu : public GameScene {
+class MainMenuDisplay : public GameSceneDisplay {
 private:
 	DisplayListener selectionChangeListener;
 	DisplayListener selectedMenuListener;
@@ -140,9 +139,9 @@ private:
 	unsigned char selectedMenu = 'B';
 	unsigned char lastSelectedMenu = 0;
 public:
-	MainMenu(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
+	MainMenuDisplay(Display *d, void (Display::*c1)(Event& e), void (Display::*c2)(Event& e), Adafruit_SSD1331& o, Localization& l, EventQueue& e);
 	void draw(unsigned long long nowMS);
-	~MainMenu();
+	~MainMenuDisplay();
 };
 
 #endif

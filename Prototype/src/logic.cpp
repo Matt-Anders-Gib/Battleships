@@ -1,9 +1,18 @@
 #include "include/logic.h"
 
 
+//have to pass Logic context in as well
+TitleSceneLogic::TitleSceneLogic(EventQueue& e) : GameSceneLogic(e) {
+	//anyListener = LogicListener()
+	//events.registerListener();
+}
+
+
 Logic::Logic(EventQueue& eventsQueue) : events{eventsQueue} {
 	rawButtonListener = LogicListener(this, &Logic::convertRawButtonToInput, EVENT_TYPE::EVENT_RAW_BUTTON_DOWN);
 	events.registerListener(rawButtonListener);
+
+	currentScene = new TitleSceneLogic(eventsQueue);
 }
 
 
@@ -12,7 +21,7 @@ void Logic::convertRawButtonToInput(Event& e) {
 }
 
 
-void Logic::update() {
+void Logic::processEvents() {
 	while(!events.empty()) {
 		Event& currentEvent = events.dequeue();
 		eventUsed = false;
@@ -33,4 +42,9 @@ void Logic::update() {
 			Serial.println(static_cast<int>(currentEvent.type));
 		}
 	}
+}
+
+
+void Logic::update() {
+	processEvents();
 }

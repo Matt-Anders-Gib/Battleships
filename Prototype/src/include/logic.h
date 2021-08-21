@@ -3,13 +3,10 @@
 
 #include "Arduino.h" //DELETE ME, YO
 
-
-#include "global.h"
 #include "eventqueue.h"
 
 
 class Logic;
-
 struct LogicListener : public Listener {
 	Logic *activeObject;
 	void (Logic::*callback)(Event& e);
@@ -30,17 +27,35 @@ struct LogicListener : public Listener {
 };
 
 
+class GameSceneLogic {
+private:
+	EventQueue& events;
+public:
+	GameSceneLogic(EventQueue& e) : events{e} {}
+};
+
+
+class TitleSceneLogic : public GameSceneLogic {
+private:
+	LogicListener anyInputListener;
+public:
+	TitleSceneLogic(EventQueue& e);
+};
+
+
 class Logic {
 private:
-	GAME_SCREEN lastScreen = GAME_SCREEN::NONE;
-
 	EventQueue& events;
 	bool eventUsed = false;
 
 	Gib::LinkedListNode<Listener>* currentListener;
 
+	GameSceneLogic* currentScene;
+
 	LogicListener rawButtonListener;
 	void convertRawButtonToInput(Event& e);
+
+	void processEvents();
 public:
 	Logic(EventQueue& eventsQueue);
 
