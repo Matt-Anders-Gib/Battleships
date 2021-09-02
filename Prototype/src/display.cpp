@@ -167,7 +167,6 @@ void Display::mainMenuButtonSelected(Event& e) {
 
 void Display::leaveTitleScreen(Event& e) {
 	clear();
-
 	delete currentScene;
 	currentScene = new MainMenuDisplay(this, &Display::mainMenuChangeSelectedButton, &Display::mainMenuButtonSelected, oled, loc, events);
 }

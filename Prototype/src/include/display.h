@@ -69,6 +69,8 @@ private:
 
 	GameSceneDisplay* currentScene;
 
+	void clear();
+
 	void leaveTitleScreen(Event& e);
 
 	void mainMenuChangeSelectedButton(Event& e);
@@ -76,7 +78,6 @@ private:
 public:
 	Display(EventQueue& e);
 
-	void clear();
 	void setup();
 	void updateDisplay(unsigned long long nowMS);
 };
