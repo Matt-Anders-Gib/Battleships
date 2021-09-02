@@ -1,27 +1,25 @@
 #include "Arduino.h"
 #include "src/include/input.h"
 #include "src/include/network.h"
-#include "src/include/logic.h"
-#include "src/include/display.h"
+
+#include "src/include/gamescene.h"
 
 #include "src/include/eventqueue.h"
 
 EventQueue events = EventQueue();
 
-
 Input input;
-
-Logic logicController = Logic(events);
 Network net;
-Display oled = Display(events);
+
+GameScene* currentScene;
 
 
 void loop() {
 	input.poll(events, millis());
 	net.processIncoming();
-	logicController.update();
+	currentScene->processLogic();
 	net.processOutgoing();
-	oled.updateDisplay(millis());
+	currentScene->updateDisplay(millis());
 }
 
 
